@@ -10,4 +10,4 @@ public:
 private:
 };
 
-}
+}// namespace BOARD_NAME
