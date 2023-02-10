@@ -1,3 +1,3 @@
 #include <IMU.hpp>
 
-namespace BOARD_NAME {}
+namespace IMU {}

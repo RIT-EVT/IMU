@@ -2,4 +2,4 @@
 
 ## Introduction
 
-*One-paragraph summary of the board and its purpose on the bike*
+*The Inertial Measurement Unit senses the acceleration of the bike and reports any relevant data over CAN.*
