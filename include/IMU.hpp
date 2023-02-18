@@ -1,13 +1,13 @@
 #pragma once
 
-namespace BOARD_NAME {
+namespace IMU {
 
 /**
  * This is an example of a class for a board
  */
-class BOARD_NAME {
+class IMU {
 public:
 private:
 };
 
-}
+}// namespace IMU
