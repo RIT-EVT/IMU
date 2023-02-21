@@ -1,4 +1,4 @@
-#include <BOARD_NAME/dev/LED.hpp>
+#include <dev/LED.hpp>
 
 namespace BOARD_NAME::DEV {
 
