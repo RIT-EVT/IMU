@@ -28,6 +28,7 @@ public:
 
 private:
     /**
+     * A vector for the euler data.
      * 0. VECTOR_EULER_X
      * 1. VECTOR_EULER_Y
      * 2. VECTOR_EULER_Z
@@ -35,6 +36,7 @@ private:
     uint16_t vectorEuler[3] = { 1, 2, 3};
 
     /**
+     * A vector for the gyroscope data.
      * 0. VECTOR_GYROSCOPE_X
      * 1. VECTOR_GYROSCOPE_Y
      * 2. VECTOR_GYROSCOPE_Z
@@ -42,6 +44,7 @@ private:
     uint16_t vectorGyroscope[3]= { 1, 2, 3};
 
     /**
+     * A vector for the linear acceleration data.
      * 0. VECTOR_LINEAR_ACCEL_X
      * 1. VECTOR_LINEAR_ACCEL_Y
      * 2. VECTOR_LINEAR_ACCEL_Z
@@ -49,6 +52,7 @@ private:
     uint16_t vectorLinearAccel[3] = { 1, 2, 3};
 
     /**
+     * A vector for the accelerometer data.
      * 0. VECTOR_ACCELEROMETER_X
      * 1. VECTOR_ACCELEROMETER_Y
      * 2. VECTOR_ACCELEROMETER_Z
