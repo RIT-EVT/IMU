@@ -32,28 +32,28 @@ private:
      * 1. VECTOR_EULER_Y
      * 2. VECTOR_EULER_Z
      */
-    uint16_t vectorEuler[3] = { 1, 2, 3};
+    uint16_t vectorEuler[3] = {1, 2, 3};
 
     /**
      * 0. VECTOR_GYROSCOPE_X
      * 1. VECTOR_GYROSCOPE_Y
      * 2. VECTOR_GYROSCOPE_Z
      */
-    uint16_t vectorGyroscope[3]= { 1, 2, 3};
+    uint16_t vectorGyroscope[3] = {1, 2, 3};
 
     /**
      * 0. VECTOR_LINEAR_ACCEL_X
      * 1. VECTOR_LINEAR_ACCEL_Y
      * 2. VECTOR_LINEAR_ACCEL_Z
      */
-    uint16_t vectorLinearAccel[3] = { 1, 2, 3};
+    uint16_t vectorLinearAccel[3] = {1, 2, 3};
 
     /**
      * 0. VECTOR_ACCELEROMETER_X
      * 1. VECTOR_ACCELEROMETER_Y
      * 2. VECTOR_ACCELEROMETER_Z
      */
-    uint16_t vectorAccelerometer[3] = { 1, 2, 3};
+    uint16_t vectorAccelerometer[3] = {1, 2, 3};
 
     /**
      * Object Dictionary Size
@@ -125,28 +125,23 @@ private:
         {
             .Key = CO_KEY(0x1800, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
             .Type = nullptr,
-            .Data = (uintptr_t) 5
-        },
-        {   //180h+Node-ID
+            .Data = (uintptr_t) 5},
+        {//180h+Node-ID
          .Key = CO_KEY(0x1800, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
          .Type = nullptr,
-         .Data = (uintptr_t) CO_COBID_TPDO_DEFAULT(0) + NODE_ID
-        },
-        {   //timer triggered
+         .Data = (uintptr_t) CO_COBID_TPDO_DEFAULT(0) + NODE_ID},
+        {//timer triggered
          .Key = CO_KEY(0x1800, 2, CO_UNSIGNED8 | CO_OBJ_D__R_),
          .Type = nullptr,
-         .Data = (uintptr_t) 0xFE
-        },
-        {   //no inhibit time
+         .Data = (uintptr_t) 0xFE},
+        {//no inhibit time
          .Key = CO_KEY(0x1800, 3, CO_UNSIGNED16 | CO_OBJ_D__R_),
          .Type = nullptr,
-         .Data = (uintptr_t) 0
-        },
-        {   //send every 2 seconds
+         .Data = (uintptr_t) 0},
+        {//send every 2 seconds
          .Key = CO_KEY(0x1800, 5, CO_UNSIGNED16 | CO_OBJ_D__R_),
          .Type = CO_TEVENT,
-         .Data = (uintptr_t) 2000
-        },
+         .Data = (uintptr_t) 2000},
         /**
          * TPDO 2 Settings
          * 0. The number of sub indxes.
@@ -158,28 +153,23 @@ private:
         {
             .Key = CO_KEY(0x1801, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
             .Type = nullptr,
-            .Data = (uintptr_t) 5
-        },
-        {   //180h+Node-ID
+            .Data = (uintptr_t) 5},
+        {//180h+Node-ID
          .Key = CO_KEY(0x1801, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
          .Type = nullptr,
-         .Data = (uintptr_t) CO_COBID_TPDO_DEFAULT(1) + NODE_ID
-        },
-        {   //timer triggered
+         .Data = (uintptr_t) CO_COBID_TPDO_DEFAULT(1) + NODE_ID},
+        {//timer triggered
          .Key = CO_KEY(0x1801, 2, CO_UNSIGNED8 | CO_OBJ_D__R_),
          .Type = nullptr,
-         .Data = (uintptr_t) 0xFE
-        },
-        {   //no inhibit time
+         .Data = (uintptr_t) 0xFE},
+        {//no inhibit time
          .Key = CO_KEY(0x1801, 3, CO_UNSIGNED16 | CO_OBJ_D__R_),
          .Type = nullptr,
-         .Data = (uintptr_t) 0
-        },
-        {   //send every 2 seconds
+         .Data = (uintptr_t) 0},
+        {//send every 2 seconds
          .Key = CO_KEY(0x1801, 5, CO_UNSIGNED16 | CO_OBJ_D__R_),
          .Type = CO_TEVENT,
-         .Data = (uintptr_t) 2000
-        },
+         .Data = (uintptr_t) 2000},
         /**
          * TPDO 3 Settings
          * 0. The number of sub indxes.
@@ -191,28 +181,23 @@ private:
         {
             .Key = CO_KEY(0x1802, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
             .Type = nullptr,
-            .Data = (uintptr_t) 5
-        },
-        {   //180h+Node-ID
+            .Data = (uintptr_t) 5},
+        {//180h+Node-ID
          .Key = CO_KEY(0x1802, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
          .Type = nullptr,
-         .Data = (uintptr_t) CO_COBID_TPDO_DEFAULT(2) + NODE_ID
-        },
-        {   //timer triggered
+         .Data = (uintptr_t) CO_COBID_TPDO_DEFAULT(2) + NODE_ID},
+        {//timer triggered
          .Key = CO_KEY(0x1802, 2, CO_UNSIGNED8 | CO_OBJ_D__R_),
          .Type = nullptr,
-         .Data = (uintptr_t) 0xFE
-        },
-        {   //no inhibit time
+         .Data = (uintptr_t) 0xFE},
+        {//no inhibit time
          .Key = CO_KEY(0x1802, 3, CO_UNSIGNED16 | CO_OBJ_D__R_),
          .Type = nullptr,
-         .Data = (uintptr_t) 0
-        },
-        {   //send every 2 seconds
+         .Data = (uintptr_t) 0},
+        {//send every 2 seconds
          .Key = CO_KEY(0x1802, 5, CO_UNSIGNED16 | CO_OBJ_D__R_),
          .Type = CO_TEVENT,
-         .Data = (uintptr_t) 2000
-        },
+         .Data = (uintptr_t) 2000},
         /**
          * TPDO 1 Mapping
          * 0. The number of mapping objects in the first TPDO
@@ -224,28 +209,19 @@ private:
         {
             .Key = CO_KEY(0x1A00, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
             .Type = nullptr,
-            .Data = (uintptr_t) 4
-        },
-        {
-            .Key = CO_KEY(0x1A00, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2100, 0, 16)
-        },
-        {
-            .Key = CO_KEY(0x1A00, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2100, 1, 16)
-        },
-        {
-            .Key = CO_KEY(0x1A00, 3, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2100, 2, 16)
-        },
-        {
-            .Key = CO_KEY(0x1A00, 4, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2100, 3, 16)
-        },
+            .Data = (uintptr_t) 4},
+        {.Key = CO_KEY(0x1A00, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2100, 0, 16)},
+        {.Key = CO_KEY(0x1A00, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2100, 1, 16)},
+        {.Key = CO_KEY(0x1A00, 3, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2100, 2, 16)},
+        {.Key = CO_KEY(0x1A00, 4, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2100, 3, 16)},
         /**
          * TPDO 2 Mapping
          * 0. The number of mapping objects in the first TPDO
@@ -257,28 +233,19 @@ private:
         {
             .Key = CO_KEY(0x1A01, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
             .Type = nullptr,
-            .Data = (uintptr_t) 4
-        },
-        {
-            .Key = CO_KEY(0x1A01, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2101, 0, 16)
-        },
-        {
-            .Key = CO_KEY(0x1A01, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2101, 1, 16)
-        },
-        {
-            .Key = CO_KEY(0x1A01, 3, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2101, 2, 16)
-        },
-        {
-            .Key = CO_KEY(0x1A01, 4, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2101, 3, 16)
-        },
+            .Data = (uintptr_t) 4},
+        {.Key = CO_KEY(0x1A01, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2101, 0, 16)},
+        {.Key = CO_KEY(0x1A01, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2101, 1, 16)},
+        {.Key = CO_KEY(0x1A01, 3, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2101, 2, 16)},
+        {.Key = CO_KEY(0x1A01, 4, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2101, 3, 16)},
         /**
          * TPDO 3 Mapping
          * 0. The number of mapping objects in the first TPDO
@@ -290,28 +257,19 @@ private:
         {
             .Key = CO_KEY(0x1A02, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
             .Type = nullptr,
-            .Data = (uintptr_t) 4
-        },
-        {
-            .Key = CO_KEY(0x1A02, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2102, 0, 16)
-        },
-        {
-            .Key = CO_KEY(0x1A02, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2102, 1, 16)
-        },
-        {
-            .Key = CO_KEY(0x1A02, 3, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2102, 2, 16)
-        },
-        {
-            .Key = CO_KEY(0x1A02, 4, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2102, 3, 16)
-        },
+            .Data = (uintptr_t) 4},
+        {.Key = CO_KEY(0x1A02, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2102, 0, 16)},
+        {.Key = CO_KEY(0x1A02, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2102, 1, 16)},
+        {.Key = CO_KEY(0x1A02, 3, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2102, 2, 16)},
+        {.Key = CO_KEY(0x1A02, 4, CO_UNSIGNED32 | CO_OBJ_D__R_),
+         .Type = nullptr,
+         .Data = CO_LINK(0x2102, 3, 16)},
 
         /**
          * Data Links

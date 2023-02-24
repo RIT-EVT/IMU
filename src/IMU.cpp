@@ -8,4 +8,4 @@ CO_OBJ_T* IMU::getObjectDictionary() {
 uint16_t IMU::getObjectDictionarySize() const {
     return OBJECT_DICTIONARY_SIZE;
 }
-}
+}// namespace IMU
