@@ -1,8 +1,5 @@
 #pragma once
 
-#include <Canopen/co_core.h>
-#include <EVT/io/CANopen.hpp>
-
 namespace IMU {
 
 /**
@@ -25,7 +22,6 @@ public:
      * @return size of the Object Dictionary
      */
     uint16_t getObjectDictionarySize() const;
-
 private:
     /**
      * A vector for the euler data.
@@ -383,23 +379,5 @@ private:
         CO_OBJ_DIR_ENDMARK,
     };
 };
+
 }// namespace IMU
-/*
-BO_ 913 N17_TPDO2: 8 IMU
-    SG_ VECTOR_ACCELEROMETER_Z : 48|16@1- (1,0) [0|0] "" Vector__XXX
-    SG_ VECTOR_LINEAR_ACCEL_Z : 32|16@1- (1,0) [0|0] "" Vector__XXX
-    SG_ VECTOR_GYROSCOPE_Z : 16|16@1- (1,0) [0|0] "" Vector__XXX
-    SG_ VECTOR_EULER_Z : 0|16@1- (1,0) [0|0] "" Vector__XXX
-
-BO_ 657 N17_TPDO1: 8 IMU
-    SG_ VECTOR_ACCELEROMETER_Y : 48|16@1- (1,0) [0|0] "" Vector__XXX
-    SG_ VECTOR_LINEAR_ACCEL_Y : 32|16@1- (1,0) [0|0] "" Vector__XXX
-    SG_ VECTOR_GYROSCOPE_Y : 16|16@1- (1,0) [0|0] "" Vector__XXX
-    SG_ VECTOR_EULER_Y : 0|16@1- (1,0) [0|0] "" Vector__XXX
-
-BO_ 401 N17_TPDO0: 8 IMU
-    SG_ VECTOR_ACCELEROMETER_X : 48|16@1- (1,0) [0|0] "" Vector__XXX
-    SG_ VECTOR_LINEAR_ACCEL_X : 32|16@1- (1,0) [0|0] "" Vector__XXX
-    SG_ VECTOR_GYROSCOPE_X : 16|16@1- (1,0) [0|0] "" Vector__XXX
-    SG_ VECTOR_EULER_X : 0|16@1- (1,0) [0|0] "" Vector__XXX
-*/
