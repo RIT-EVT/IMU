@@ -1,7 +1,5 @@
 /**
-* This is a basic sample of using the UART module. The program provides a
-* basic echo functionality where the uart will write back whatever the user
-* enters.
+* This is a basic sample of using CAN with the IMU.
 */
 
 #include <Canopen/co_core.h>
