@@ -33,112 +33,133 @@ uint16_t IMU::getObjectDictionarySize() const {
 
 bool IMU::setup() {
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Starting Initialization...\r\n");
-    // The board can take up to 850 ms to boot.
 
-    int timeout = 850; // in ms
-    while (timeout > 0) {
-        uint8_t hold;
-        IO::I2C::I2CStatus status = i2c.readReg(IMU::IMU::I2C_SLAVE_ADDR, BNO055_CHIP_ID_ADDR, &hold);
+    uint8_t id = 0;
+    i2c.write(I2C_SLAVE_ADDR, &id, 0);
+    i2c.write(I2C_SLAVE_ADDR, 0x00);
+    i2c.read(I2C_SLAVE_ADDR, &id);
 
-        if (status == IO::I2C::I2CStatus::OK) {
-            log::LOGGER.log(log::Logger::LogLevel::INFO, "Connected to i2c!\r\n");
-            break;
-        }
+    uint8_t configBytes[2] = {BNO055_OPR_MODE_ADDR, OPERATION_MODE_CONFIG};
+    i2c.write(I2C_SLAVE_ADDR, configBytes, 2);
+    EVT::core::time::wait(30);
 
+    uint8_t resetBytes[2] = {BNO055_SYS_TRIGGER_ADDR, 0x20};
+    i2c.write(I2C_SLAVE_ADDR, resetBytes, 2);
+    time::wait(30);
+
+    do {
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Was not detected, try again...\r\n");
         time::wait(10);
-        timeout -= 10;
-    }
-
-    if (timeout <= 0) {
-        log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed to connect to IMU over can.\r\n");
-        return false;
-    }
-
+    } while(i2c.write(I2C_SLAVE_ADDR, 0x00) != IO::I2C::I2CStatus::OK);
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Device should be booted now... Checking if we can read...\r\n");
 
-    uint8_t id;
-    i2c.readReg(IMU::IMU::I2C_SLAVE_ADDR, BNO055_CHIP_ID_ADDR, &id);
+    id = 0;
+    i2c.write(I2C_SLAVE_ADDR, 0x00);
+    i2c.read(I2C_SLAVE_ADDR, &id);
+
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "ID Read 0x%x\r\n", id);
     if (id != BNO055_ID) {
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed first initialization... Trying again.\r\n");
 
-        time::wait(1000);// hold on for boot
-        i2c.readReg(IMU::IMU::I2C_SLAVE_ADDR, BNO055_CHIP_ID_ADDR, &id);
+        time::wait(1000); // Hold on for boot
+        i2c.write(I2C_SLAVE_ADDR, 0x00);
+        i2c.read(I2C_SLAVE_ADDR, &id);
+
         if (id != BNO055_ID) {
-            log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed to initialize the IMU\r\n");
+            log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed to initialize the IMU. Quitting initialization\r\n");
             return false;
         }
     }
 
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Device booted!\r\n");
-
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Putting IMU into Configuration Mode.\r\n");
-
-    // Put the device into configuration mode
-    setMode(OPERATION_MODE_CONFIG);
-
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Device should be in config mode, resetting system now...\r\n");
-
-    // Reset the system
-    i2c.writeReg(IMU::IMU::I2C_SLAVE_ADDR, BNO055_SYS_TRIGGER_ADDR, 0x20);
-    time::wait(30);
-
-    // Wait for the system boot again 🤦
-    id = 0x00;
-    IO::I2C::I2CStatus status;
-
-    do {
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Checking system boot status...\r\n");
-        status = i2c.readReg(IMU::IMU::I2C_SLAVE_ADDR, BNO055_CHIP_ID_ADDR, &id);
-        time::wait(10);
-    }
-    while(id != BNO055_ID && status == IO::I2C::I2CStatus::OK);
-
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "System booted.\r\n");
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Connected to i2c!\r\n");
 
     time::wait(50);
 
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Setting the default power mode.\r\n");
-    // Set the default power mode
-    i2c.writeReg(IMU::IMU::I2C_SLAVE_ADDR, BNO055_PWR_MODE_ADDR, bno055PowerMode::POWER_MODE_NORMAL);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Resetting device...\r\n");
+    uint8_t powerModeBytes[2] = {BNO055_PWR_MODE_ADDR, POWER_MODE_NORMAL};
+    i2c.write(I2C_SLAVE_ADDR, powerModeBytes, 2);
     time::wait(10);
 
-    i2c.writeReg(IMU::IMU::I2C_SLAVE_ADDR, BNO055_PAGE_ID_ADDR, 0x00);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Device Reset.\r\n");
 
-    i2c.writeReg(IMU::IMU::I2C_SLAVE_ADDR, BNO055_SYS_TRIGGER_ADDR, 0x00);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Reset device page.\r\n");
+    uint8_t pageBytes[2] = {BNO055_PAGE_ID_ADDR, 0x00};
+    i2c.write(I2C_SLAVE_ADDR, pageBytes, 2);
+
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Reset the system reset.\r\n");
+    uint8_t systemResetResetBytes[2] = {BNO055_SYS_TRIGGER_ADDR, 0x00};
+    i2c.write(I2C_SLAVE_ADDR, systemResetResetBytes, 2);
+
     time::wait(10);
 
-    /* Set the requested operating mode (see section 3.3) */
-    setMode(OPERATION_MODE_NDOF);
-
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Set config mode to all data.\r\n");
+    uint8_t config2Bytes[2] = {BNO055_OPR_MODE_ADDR, OPERATION_MODE_NDOF};
+    i2c.write(I2C_SLAVE_ADDR, config2Bytes, 2);
     time::wait(20);
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "IMU Successfully (hopefully) Initialized.\r\n");
+
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "System successfully booted!\r\n");
     return true;
 }
 
 void IMU::loop() {
-    uint8_t oprMode;
-    i2c.readReg(I2C_SLAVE_ADDR, BNO055_OPR_MODE_ADDR, &oprMode);
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Mode: %X", oprMode);
+    /** Get the Euler data */
+    uint16_t euler[3] = { 0, 0 ,0};
+    uint8_t eulerBuffer[6] = { 0, 0, 0, 0, 0, 0};
 
-//    uint8_t gyro[3] = { 0, 0 ,0};
-//    uint8_t buffer[6] = { 0, 0, 0, 0, 0, 0};
-//
-//    i2c.readReg(I2C_SLAVE_ADDR, BNO055_GYRO_DATA_X_LSB_ADDR, &buffer[0]);
-//    i2c.readReg(I2C_SLAVE_ADDR, BNO055_GYRO_DATA_X_MSB_ADDR, &buffer[1]);
-//
-//    i2c.readReg(I2C_SLAVE_ADDR, BNO055_GYRO_DATA_Y_LSB_ADDR, &buffer[2]);
-//    i2c.readReg(I2C_SLAVE_ADDR, BNO055_GYRO_DATA_Y_MSB_ADDR, &buffer[3]);
-//
-//    i2c.readReg(I2C_SLAVE_ADDR, BNO055_GYRO_DATA_Z_LSB_ADDR, &buffer[4]);
-//    i2c.readReg(I2C_SLAVE_ADDR, BNO055_GYRO_DATA_Z_MSB_ADDR, &buffer[5]);
-//
-//    gyro[0] = buffer[0] | (buffer[1] << 8);
-//    gyro[1] = buffer[2] | (buffer[3] << 8);
-//    gyro[2] = buffer[4] | (buffer[5] << 8);
-//
-//    log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw x: %d", gyro[0] / 16.0);
-//    log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw y: %d", gyro[1] / 16.0);
-//    log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw z: %d", gyro[2] / 16.0);
+    i2c.write(0x28, BNO055_EULER_H_LSB_ADDR);
+    i2c.read(0x28, eulerBuffer, 6);
+
+    euler[0] = eulerBuffer[0] | (eulerBuffer[1] << 8);
+    euler[1] = eulerBuffer[2] | (eulerBuffer[3] << 8);
+    euler[2] = eulerBuffer[4] | (eulerBuffer[5] << 8);
+
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler Raw x: %d", (int16_t) euler[0] / 16);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler Raw y: %d", (int16_t) euler[1] / 16);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler Raw z: %d", (int16_t) euler[2] / 16);
+
+    /** Get the Gyroscope data */
+    uint16_t gyro[3] = { 0, 0 ,0};
+    uint8_t gyroBuffer[6] = { 0, 0, 0, 0, 0, 0};
+
+    i2c.write(0x28, BNO055_GYRO_DATA_X_LSB_ADDR);
+    i2c.read(0x28, gyroBuffer, 6);
+
+    gyro[0] = gyroBuffer[0] | (gyroBuffer[1] << 8);
+    gyro[1] = gyroBuffer[2] | (gyroBuffer[3] << 8);
+    gyro[2] = gyroBuffer[4] | (gyroBuffer[5] << 8);
+
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw x: %d", (int16_t) gyro[0] / 16);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw y: %d", (int16_t) gyro[1] / 16);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw z: %d", (int16_t) gyro[2] / 16);
+
+    /** Get the Linear Acceleration data */
+    uint16_t linearAccel[3] = { 0, 0 ,0};
+    uint8_t linearAccelBuffer[6] = { 0, 0, 0, 0, 0, 0};
+
+    i2c.write(0x28, BNO055_LINEAR_ACCEL_DATA_X_LSB_ADDR);
+    i2c.read(0x28, linearAccelBuffer, 6);
+
+    linearAccel[0] = linearAccelBuffer[0] | (linearAccelBuffer[1] << 8);
+    linearAccel[1] = linearAccelBuffer[2] | (linearAccelBuffer[3] << 8);
+    linearAccel[2] = linearAccelBuffer[4] | (linearAccelBuffer[5] << 8);
+
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration Raw x: %d", (int16_t) linearAccel[0] / 100);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration Raw y: %d", (int16_t) linearAccel[1] / 100);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration Raw z: %d", (int16_t) linearAccel[2] / 100);
+
+    /** Get the Accelerometer data */
+    uint16_t accelerometer[3] = { 0, 0 ,0};
+    uint8_t accelerometerBuffer[6] = { 0, 0, 0, 0, 0, 0};
+
+    i2c.write(0x28, BNO055_ACCEL_DATA_X_LSB_ADDR);
+    i2c.read(0x28, accelerometerBuffer, 6);
+
+    accelerometer[0] = accelerometerBuffer[0] | (accelerometerBuffer[1] << 8);
+    accelerometer[1] = accelerometerBuffer[2] | (accelerometerBuffer[3] << 8);
+    accelerometer[2] = accelerometerBuffer[4] | (accelerometerBuffer[5] << 8);
+
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer x: %d", (int16_t) accelerometer[0] / 100);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer y: %d", (int16_t) accelerometer[1] / 100);
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer z: %d", (int16_t) accelerometer[2] / 100);
 }
 }// namespace IMU

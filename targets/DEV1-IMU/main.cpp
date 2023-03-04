@@ -103,48 +103,7 @@ int main() {
     /**
      * Initialize the IMU
      */
-//    imu.setup();
-    uint8_t id = 0;
-    i2c.write(0x28, &id, 0);
-    i2c.write(0x28, 0x00);
-    i2c.read(0x28, &id);
-
-    uint8_t configBytes[2] = {0x3d, 0x00};
-    i2c.write(0x28, configBytes, 2);
-    EVT::core::time::wait(30);
-
-    uint8_t resetBytes[2] = {0x3F, 0x20};
-    i2c.write(0x28, resetBytes, 2);
-    time::wait(30);
-
-    do {
-        time::wait(10);
-    } while(i2c.write(0x28, 0x00) != IO::I2C::I2CStatus::OK);
-
-    id = 0;
-    i2c.write(0x28, 0x00);
-    i2c.read(0x28, &id);
-
-    time::wait(50);
-
-    uint8_t powerModeBytes[2] = {0x3E, 0x00};
-    i2c.write(0x28, powerModeBytes, 2);
-    time::wait(10);
-
-    uint8_t pageBytes[2] = {0x07, 0x00};
-    i2c.write(0x28, pageBytes, 2);
-
-    uint8_t systemResetResetBytes[2] = {0x3F, 0x00};
-    i2c.write(0x28, systemResetResetBytes, 2);
-
-    time::wait(10);
-
-    uint8_t config2Bytes[2] = {0x3D, 0x0C};
-    i2c.write(0x28, config2Bytes, 2);
-    time::wait(20);
-
-    uint8_t mode;
-    i2c.readReg(0x28, 0x3D, &mode);
+    imu.setup();
 
     /**
     * Initialize CAN
@@ -212,21 +171,7 @@ int main() {
     CONmtSetMode(&canNode.Nmt, CO_OPERATIONAL);
 
     while (1) {
-//        imu.loop();
-        uint16_t gyro[3] = { 0, 0 ,0};
-        uint8_t buffer[6] = { 0, 0, 0, 0, 0, 0};
-
-        i2c.write(0x28, 0X2E);
-        i2c.read(0x28, buffer, 6);
-
-        gyro[0] = buffer[0] | (buffer[1] << 8);
-        gyro[1] = buffer[2] | (buffer[3] << 8);
-        gyro[2] = buffer[4] | (buffer[5] << 8);
-
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity Raw x: %d", (int16_t) gyro[0]);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity Raw y: %d", (int16_t) gyro[1]);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity Raw z: %d", (int16_t) gyro[2]);
-
+        imu.loop();
 
         CONodeProcess(&canNode);
         // Update the state of timer based events
