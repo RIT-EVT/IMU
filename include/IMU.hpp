@@ -1,16 +1,57 @@
 #pragma once
 
+#include <EVT/io/I2C.hpp>
+#include <EVT/io/UART.hpp>
 #include <Canopen/co_core.h>
 #include <EVT/io/CANopen.hpp>
 
+namespace IO = EVT::core::IO;
+
 namespace IMU {
+#define BNO055_CHIP_ID_ADDR (0x00)
+#define BNO055_ID (0xA0)
+
+/* Page id register definition */
+#define BNO055_PAGE_ID_ADDR (0X07)
+
+/* Mode registers */
+#define BNO055_OPR_MODE_ADDR (0X3D)
+#define BNO055_PWR_MODE_ADDR (0X3E)
+
+#define BNO055_SYS_TRIGGER_ADDR (0X3F)
+
+/** Operation mode settings **/
+typedef enum {
+    OPERATION_MODE_CONFIG = 0X00,
+    OPERATION_MODE_ACCONLY = 0X01,
+    OPERATION_MODE_MAGONLY = 0X02,
+    OPERATION_MODE_GYRONLY = 0X03,
+    OPERATION_MODE_ACCMAG = 0X04,
+    OPERATION_MODE_ACCGYRO = 0X05,
+    OPERATION_MODE_MAGGYRO = 0X06,
+    OPERATION_MODE_AMG = 0X07,
+    OPERATION_MODE_IMUPLUS = 0X08,
+    OPERATION_MODE_COMPASS = 0X09,
+    OPERATION_MODE_M4G = 0X0A,
+    OPERATION_MODE_NDOF_FMC_OFF = 0X0B,
+    OPERATION_MODE_NDOF = 0X0C
+} bno055OperationMode;
+
+/** BNO055 power settings */
+typedef enum {
+    POWER_MODE_NORMAL = 0X00,
+    POWER_MODE_LOWPOWER = 0X01,
+    POWER_MODE_SUSPEND = 0X02
+} bno055PowerMode;
 
 /**
  * This is an example of a class for a board
  */
 class IMU {
 public:
+    static constexpr uint8_t I2C_SLAVE_ADDR = 0x28;
     static constexpr uint8_t NODE_ID = 0x17;
+    IMU(IO::I2C& i2C);
 
     /**
      * Gets the object dictionary
@@ -26,7 +67,15 @@ public:
      */
     uint16_t getObjectDictionarySize() const;
 
+    void setup();
+
+    void setMode(uint8_t mode);
 private:
+    EVT::core::IO::I2C& i2c;
+
+    uint8_t _mode = 0x00;
+
+
     /**
     * 0. VECTOR_EULER_X - vectorXValues[0]
     * 1. VECTOR_GYROSCOPE_X - vectorXValues[1]

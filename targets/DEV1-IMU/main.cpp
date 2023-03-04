@@ -20,11 +20,6 @@ namespace log = EVT::core::log;
 namespace time = EVT::core::time;
 namespace DEV = EVT::core::DEV;
 
-namespace IO = EVT::core::IO;
-namespace log = EVT::core::log;
-namespace time = EVT::core::time;
-namespace DEV = EVT::core::DEV;
-
 ///////////////////////////////////////////////////////////////////////////////
 // EVT-core CAN callback and CAN setup. This will include logic to set
 // aside CANopen messages into a specific queue
@@ -98,7 +93,16 @@ int main() {
 
     // Initialize the timer
     DEV::Timer& timer = DEV::getTimer<DEV::MCUTimer::Timer2>(100);
-    IMU::IMU imu;
+
+    // Setup i2c
+    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
+
+    IMU::IMU imu(i2c);
+
+    /**
+     * Initialize the IMU
+     */
+    imu.setup();
 
     /**
     * Initialize CAN
@@ -164,6 +168,8 @@ int main() {
     CONodeInit(&canNode, &canSpec);
     CONodeStart(&canNode);
     CONmtSetMode(&canNode.Nmt, CO_OPERATIONAL);
+
+    imu.setup();
 
     while (1) {
         CONodeProcess(&canNode);
