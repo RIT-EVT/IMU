@@ -43,6 +43,8 @@ add_library(${PROJECT_NAME} STATIC)
 # Add sources
 target_sources(${PROJECT_NAME} PRIVATE
         src/IMU.cpp
+        include/BNO055.hpp
+        src/BNO055.cpp
         )
 
 ###############################################################################
