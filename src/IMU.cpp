@@ -10,6 +10,11 @@ IMU::IMU(IO::I2C& i2c) : bno055(i2c) {
 CO_OBJ_T* IMU::getObjectDictionary() {
     return objectDictionary;
 }
+
+uint16_t IMU::getObjectDictionarySize() const {
+    return OBJECT_DICTIONARY_SIZE;
+}
+
 void IMU::cycle() {
     // Retrieve the Euler X, Y and Z values from the bno055
     uint16_t eulerX, eulerY, eulerZ;

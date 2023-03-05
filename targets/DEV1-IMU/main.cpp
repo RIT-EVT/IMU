@@ -166,7 +166,7 @@ int main() {
     CONmtSetMode(&canNode.Nmt, CO_OPERATIONAL);
 
     while (1) {
-        imu.loop();
+        imu.cycle();
 
         CONodeProcess(&canNode);
         // Update the state of timer based events
