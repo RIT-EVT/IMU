@@ -101,11 +101,6 @@ int main() {
     IMU::IMU imu(i2c);
 
     /**
-     * Initialize the IMU
-     */
-    imu.setup();
-
-    /**
     * Initialize CAN
     */
     //Will store CANopen messages that will be populated by the EVT-core CAN interrupt
