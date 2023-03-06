@@ -28,6 +28,7 @@ int main() {
     IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
 
     IMU::BNO055 bno055(i2c);
+    bno055.setup();
 
     while (1) {
         // Retrieve the Euler X, Y and Z values from the bno055

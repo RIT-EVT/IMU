@@ -98,7 +98,8 @@ int main() {
     // Setup i2c
     IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
 
-    IMU::IMU imu(i2c);
+    IMU::BNO055 bno055(i2c);
+    IMU::IMU imu(bno055);
 
     /**
     * Initialize CAN

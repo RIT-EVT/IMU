@@ -1,9 +1,9 @@
+#ifndef IMU_BNO055_HPP
+#define IMU_BNO055_HPP
+
 #include <EVT/io/I2C.hpp>
 #include <EVT/utils/time.hpp>
 #include <EVT/utils/log.hpp>
-
-#ifndef IMU_BNO055_HPP
-#define IMU_BNO055_HPP
 
 #define BNO055_CHIP_ID_ADDR (0x00)
 #define BNO055_ID (0xA0)
@@ -62,7 +62,7 @@ public:
     IO::I2C::I2CStatus getAccelerometer(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
 private:
     static constexpr uint8_t I2C_SLAVE_ADDR = 0x28;
-    EVT::core::IO::I2C& i2c;
+    IO::I2C& i2c;
 };
 
 }

@@ -12,12 +12,12 @@ namespace IO = EVT::core::IO;
 namespace IMU {
 
 /**
- * This is an example of a class for a board
+ * The IMU main class that manages a BNO055 for measuring inertial units.
  */
 class IMU {
 public:
     static constexpr uint8_t NODE_ID = 0x17;
-    IMU(IO::I2C& i2C);
+    IMU(BNO055& bnu055);
 
     /**
      * Gets the object dictionary
@@ -33,7 +33,7 @@ public:
      */
     uint16_t getObjectDictionarySize() const;
 
-    void cycle();
+    void process();
 private:
     BNO055 bno055;
 

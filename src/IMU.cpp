@@ -3,7 +3,7 @@
 namespace IO = EVT::core::IO;
 
 namespace IMU {
-IMU::IMU(IO::I2C& i2c) : bno055(i2c) {
+IMU::IMU(BNO055& bno055) : bno055(bno055) {
     bno055.setup();
 }
 
@@ -15,7 +15,7 @@ uint16_t IMU::getObjectDictionarySize() const {
     return OBJECT_DICTIONARY_SIZE;
 }
 
-void IMU::cycle() {
+void IMU::process() {
     // Retrieve the Euler X, Y and Z values from the bno055
     uint16_t eulerX, eulerY, eulerZ;
 
