@@ -64,6 +64,7 @@ private:
     static constexpr uint8_t I2C_SLAVE_ADDR = 0x28;
     EVT::core::IO::I2C& i2c;
 };
+
 }
 
 #endif//IMU_BNO055_HPP
