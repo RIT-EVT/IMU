@@ -43,6 +43,7 @@ public:
      * Process all off the data from the BNO055.
      */
     void process();
+
 private:
     /**
      * The BNO055 device that data is pulled from.

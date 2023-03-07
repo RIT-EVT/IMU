@@ -6,8 +6,8 @@
 #define IMU_BNO055_HPP
 
 #include <EVT/io/I2C.hpp>
-#include <EVT/utils/time.hpp>
 #include <EVT/utils/log.hpp>
+#include <EVT/utils/time.hpp>
 
 #define BNO055_CHIP_ID_ADDR (0x00)
 #define BNO055_ID (0xA0)
@@ -91,7 +91,7 @@ public:
     * @return an i2c status reporting if the fetch worked or not.
      * @return
      */
-    IO::I2C::I2CStatus getEuler(int16_t & xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+    IO::I2C::I2CStatus getEuler(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
 
     /**
      * Fetch the gyorscope data from the BNO055.
@@ -128,6 +128,7 @@ public:
      * @return
      */
     IO::I2C::I2CStatus getAccelerometer(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+
 private:
     /**
      * The i2c address for the BNO055.
@@ -151,6 +152,6 @@ private:
     IO::I2C::I2CStatus fetchData(uint8_t lowestAddress, int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
 };
 
-}
+}// namespace IMU
 
 #endif//IMU_BNO055_HPP

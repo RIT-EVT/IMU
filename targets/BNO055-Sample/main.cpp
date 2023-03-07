@@ -4,8 +4,8 @@
 #include <EVT/manager.hpp>
 #include <EVT/utils/log.hpp>
 
-#include <EVT/dev/MCUTimer.hpp>
 #include <BNO055.hpp>
+#include <EVT/dev/MCUTimer.hpp>
 
 namespace IO = EVT::core::IO;
 namespace log = EVT::core::log;
