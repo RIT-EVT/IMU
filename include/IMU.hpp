@@ -21,7 +21,7 @@ public:
     /**
      * The initializer for the IMU class.
      *
-     * @param bnu055 the bno055 device that the IMU pulls data from.
+     * @param bno055 the bno055 device that the IMU pulls data from.
      */
     IMU(BNO055& bno055);
 
