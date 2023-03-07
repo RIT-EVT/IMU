@@ -7,8 +7,11 @@ IMU::BNO055::BNO055(IO::I2C& i2C) : i2c(i2C) {}
  * Because of this, none of the standard EVT readReg or writeReg functions work. This function uses the write and read functions
  * from EVT-Core to write specific bytes over i2c to correctly interact with the standard the BNO055 uses. We are not sure
  * about what the board is using, all data was retrieved by using a Saleae device and inspecting the Arduino code.
+ *
+ * @return a boolean indicating whether or not the device was successfully initialized
  */
 bool IMU::BNO055::setup() {
+    // TODO: Check at the function call to see if it actually succeeds at setup.
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Starting Initialization...\r\n");
 
     // First write an empty i2c command to the device.
@@ -19,7 +22,7 @@ bool IMU::BNO055::setup() {
     i2c.read(I2C_SLAVE_ADDR, &id);
 
     // Next we are writing the configuration bytes for the device. This sets the device into config mode which makes most of the
-    // registers writeable allowing us to configure it's settings.
+    // registers writeable allowing us to configure its settings.
     uint8_t configBytes[2] = {BNO055_OPR_MODE_ADDR, OPERATION_MODE_CONFIG};
     i2c.write(I2C_SLAVE_ADDR, configBytes, 2);
     EVT::core::time::wait(30);

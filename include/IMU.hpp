@@ -23,7 +23,7 @@ public:
      *
      * @param bnu055 the bno055 device that the IMU pulls data from.
      */
-    IMU(BNO055& bnu055);
+    IMU(BNO055& bno055);
 
     /**
      * Gets the object dictionary
