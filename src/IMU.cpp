@@ -55,4 +55,5 @@ void IMU::process() {
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw z: %d", (int16_t) accelerometerZ / 100);
 
 }
+
 }// namespace IMU
