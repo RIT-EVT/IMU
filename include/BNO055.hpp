@@ -72,7 +72,7 @@ public:
     BNO055(IO::I2C& i2C);
 
     /**
-     * Sends all of the required i2c commands too initialize the i2c so it actually sends data.
+     * Sends all of the required i2c commands to initialize the chip
      *
      * @return a boolean value if the setup succeeded.
      */
