@@ -28,12 +28,14 @@ int main() {
     IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
 
     IMU::BNO055 bno055(i2c);
-    // The bno055 has a lengthy boot sequence
+    // The bno055 has a lengthy boot sequence, so it needs a setup function to be called.
     bno055.setup();
 
     while (1) {
         // Retrieve the Euler X, Y and Z values from the bno055
-        int16_t eulerX, eulerY, eulerZ;
+        int16_t eulerX;
+        int16_t eulerY;
+        int16_t eulerZ;
 
         bno055.getEuler(eulerX, eulerY, eulerZ);
 
@@ -42,7 +44,9 @@ int main() {
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler Raw z: %d", (int16_t) eulerZ / 16);
 
         // Retrieve the Gyroscope X, Y, and Z values from the bno055
-        int16_t gyroX, gyroY, gyroZ;
+        int16_t gyroX;
+        int16_t gyroY;
+        int16_t gyroZ;
 
         bno055.getGyroscope(gyroX, gyroY, gyroZ);
 
@@ -51,7 +55,9 @@ int main() {
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw z: %d", (int16_t) gyroZ / 16);
 
         // Retrieve the Linear Acceleration X, Y, and Z values from the bno055
-        int16_t linearAccelX, linearAccelY, linearAccelZ;
+        int16_t linearAccelX;
+        int16_t linearAccelY;
+        int16_t linearAccelZ;
 
         bno055.getLinearAccel(linearAccelX, linearAccelY, linearAccelZ);
 
@@ -60,7 +66,9 @@ int main() {
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration Raw z: %d", (int16_t) linearAccelZ / 100);
 
         // Retrieve the Accelerometer X, Y, and Z values from the bno055
-        int16_t accelerometerX, accelerometerY, accelerometerZ;
+        int16_t accelerometerX;
+        int16_t accelerometerY;
+        int16_t accelerometerZ;
 
         bno055.getLinearAccel(linearAccelX, linearAccelY, linearAccelZ);
 
