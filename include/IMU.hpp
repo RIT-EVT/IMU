@@ -17,6 +17,12 @@ namespace IMU {
 class IMU {
 public:
     static constexpr uint8_t NODE_ID = 0x17;
+
+    /**
+     * The initializer for the IMU class.
+     *
+     * @param bnu055 the bno055 device that the IMU pulls data from.
+     */
     IMU(BNO055& bnu055);
 
     /**
@@ -33,8 +39,14 @@ public:
      */
     uint16_t getObjectDictionarySize() const;
 
+    /**
+     * Process all off the data from the BNO055.
+     */
     void process();
 private:
+    /**
+     * The BNO055 device that data is pulled from.
+     */
     BNO055 bno055;
 
     /**

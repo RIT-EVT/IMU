@@ -98,6 +98,7 @@ int main() {
     // Setup i2c
     IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
 
+    // We do not need to call bno055.setup() because it is called in the IMU class initializer.
     IMU::BNO055 bno055(i2c);
     IMU::IMU imu(bno055);
 
@@ -167,7 +168,7 @@ int main() {
     CONmtSetMode(&canNode.Nmt, CO_OPERATIONAL);
 
     while (1) {
-        imu.cycle();
+        imu.process();
 
         CONodeProcess(&canNode);
         // Update the state of timer based events

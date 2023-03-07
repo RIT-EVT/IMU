@@ -1,3 +1,7 @@
+/**
+ * A driver for the BNO055 orientation sensor.
+ */
+
 #ifndef IMU_BNO055_HPP
 #define IMU_BNO055_HPP
 
@@ -51,18 +55,100 @@ namespace time = EVT::core::time;
 
 namespace IMU {
 
+/**
+ * A driver class for the BNO055 orientation sensor used in the IMU.
+ * Notice:
+ * This class uses a non standard (possibly) version of i2c that does not work with the EVT-Core provided `readReg` and `writeReg`.
+ * For this reason, all i2c calls in this driver use the raw `write` and `read` functions to directly emulate the code found in the
+ * arduino source.
+ *
+ * Datasheet for BNO055 - https://cdn-shop.adafruit.com/datasheets/BST_BNO055_DS000_12.pdf
+ * Arduino Source - https://github.com/adafruit/Adafruit_BNO055
+ */
 class BNO055 {
 public:
+    /**
+     * Initializer for a BNO55 sensor.
+     * Takes in i2c to setup a connection with the board
+     *
+     * @param i2C an initialized i2c session.
+     */
     BNO055(IO::I2C& i2C);
+
+    /**
+     * Sends all of the required i2c commands too initialize the i2c so it actually sends data.
+     * @return a boolean value if the setup succeeded.
+     */
     bool setup();
 
-    IO::I2C::I2CStatus getEuler(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
-    IO::I2C::I2CStatus getGyroscope(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
-    IO::I2C::I2CStatus getLinearAccel(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
-    IO::I2C::I2CStatus getAccelerometer(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
+    /**
+     * Fetch the euler angle data from the BNO055.
+     * Internally calls `fetchData`
+     *
+    * @param xBuffer a buffer to store the x data in.
+    * @param yBuffer a buffer to store the y data in.
+    * @param zBuffer a buffer to store the z data in.
+    * @return an i2c status reporting if the fetch worked or not.
+     * @return
+     */
+    IO::I2C::I2CStatus getEuler(int16_t & xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+
+    /**
+     * Fetch the gyorscope data from the BNO055.
+     * Internally calls `fetchData`
+     *
+    * @param xBuffer a buffer to store the x data in.
+    * @param yBuffer a buffer to store the y data in.
+    * @param zBuffer a buffer to store the z data in.
+    * @return an i2c status reporting if the fetch worked or not.
+     * @return
+     */
+    IO::I2C::I2CStatus getGyroscope(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+
+    /**
+     * Fetch the linear accelerometer data from the BNO055.
+     * Internally calls `fetchData`
+     *
+    * @param xBuffer a buffer to store the x data in.
+    * @param yBuffer a buffer to store the y data in.
+    * @param zBuffer a buffer to store the z data in.
+    * @return an i2c status reporting if the fetch worked or not.
+     * @return
+     */
+    IO::I2C::I2CStatus getLinearAccel(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+
+    /**
+     * Fetch the accelerometer data from the BNO055.
+     * Internally calls `fetchData`
+     *
+    * @param xBuffer a buffer to store the x data in.
+    * @param yBuffer a buffer to store the y data in.
+    * @param zBuffer a buffer to store the z data in.
+    * @return an i2c status reporting if the fetch worked or not.
+     * @return
+     */
+    IO::I2C::I2CStatus getAccelerometer(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
 private:
+    /**
+     * The i2c address for the BNO055.
+     */
     static constexpr uint8_t I2C_SLAVE_ADDR = 0x28;
+
+    /**
+     * The i2c object used for communication.
+     */
     IO::I2C& i2c;
+
+    /**
+     * Fetch data from the BNO055 using the custom i2c specification used by the device.
+     *
+     * @param lowestAddress the lowest address to read the data from.
+     * @param xBuffer a buffer to store the x data in.
+     * @param yBuffer a buffer to store the y data in.
+     * @param zBuffer a buffer to store the z data in.
+     * @return an i2c status reporting if the fetch worked or not.
+     */
+    IO::I2C::I2CStatus fetchData(uint8_t lowestAddress, int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
 };
 
 }

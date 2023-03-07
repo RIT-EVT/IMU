@@ -4,6 +4,7 @@ namespace IO = EVT::core::IO;
 
 namespace IMU {
 IMU::IMU(BNO055& bno055) : bno055(bno055) {
+    // Set up the BNO055 device.
     bno055.setup();
 }
 
@@ -17,7 +18,7 @@ uint16_t IMU::getObjectDictionarySize() const {
 
 void IMU::process() {
     // Retrieve the Euler X, Y and Z values from the bno055
-    uint16_t eulerX, eulerY, eulerZ;
+    int16_t eulerX, eulerY, eulerZ;
 
     bno055.getEuler(eulerX, eulerY, eulerZ);
 
@@ -26,7 +27,7 @@ void IMU::process() {
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler Raw z: %d", (int16_t) eulerZ / 16);
 
     // Retrieve the Gyroscope X, Y, and Z values from the bno055
-    uint16_t gyroX, gyroY, gyroZ;
+    int16_t gyroX, gyroY, gyroZ;
 
     bno055.getGyroscope(gyroX, gyroY, gyroZ);
 
@@ -35,7 +36,7 @@ void IMU::process() {
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw z: %d", (int16_t) gyroZ / 16);
 
     // Retrieve the Linear Acceleration X, Y, and Z values from the bno055
-    uint16_t linearAccelX, linearAccelY, linearAccelZ;
+    int16_t linearAccelX, linearAccelY, linearAccelZ;
 
     bno055.getLinearAccel(linearAccelX, linearAccelY, linearAccelZ);
 
@@ -44,7 +45,7 @@ void IMU::process() {
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration Raw z: %d", (int16_t) linearAccelZ / 100);
 
     // Retrieve the Accelerometer X, Y, and Z values from the bno055
-    uint16_t accelerometerX, accelerometerY, accelerometerZ;
+    int16_t accelerometerX, accelerometerY, accelerometerZ;
 
     bno055.getLinearAccel(linearAccelX, linearAccelY, linearAccelZ);
 
