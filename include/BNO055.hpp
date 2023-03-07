@@ -74,7 +74,7 @@ public:
     /**
      * Sends all of the required i2c commands to initialize the chip
      *
-     * @return a boolean value if the setup succeeded.
+     * @return whether the setup succeeded.
      */
     bool setup();
 
