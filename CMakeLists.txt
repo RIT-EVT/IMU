@@ -8,6 +8,7 @@ if(EVT_CORE_LOG_ENABLE)
     add_compile_definitions(EVT_CORE_LOG_ENABLE)
 endif()
 
+add_compile_definitions(USE_HAL_DRIVER)
 # Handle default selection of the target device
 if(NOT TARGET_DEV)
     set(TARGET_DEV "STM32F334x8")
@@ -43,6 +44,7 @@ add_library(${PROJECT_NAME} STATIC)
 # Add sources
 target_sources(${PROJECT_NAME} PRIVATE
         src/IMU.cpp
+        src/BNO055.cpp
         )
 
 ###############################################################################
