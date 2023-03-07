@@ -1,6 +1,6 @@
 #include <BNO055.hpp>
 
-IMU::BNO055::BNO055(IO::I2C& i2C): i2c(i2C) { }
+IMU::BNO055::BNO055(IO::I2C& i2C) : i2c(i2C) {}
 
 /**
  * This function is a doozie, most of the issues with it come from the fact that the BNO055 does not use standard i2c.
@@ -33,7 +33,7 @@ bool IMU::BNO055::setup() {
     do {
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Was not detected, try again...\r\n");
         time::wait(10);
-    } while(i2c.write(I2C_SLAVE_ADDR, 0x00) != IO::I2C::I2CStatus::OK);
+    } while (i2c.write(I2C_SLAVE_ADDR, 0x00) != IO::I2C::I2CStatus::OK);
 
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Device should be booted now... Checking if we can read...\r\n");
 
@@ -46,7 +46,7 @@ bool IMU::BNO055::setup() {
     if (id != BNO055_ID) {
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed first initialization... Trying again.\r\n");
 
-        time::wait(1000); // Hold on for boot
+        time::wait(1000);// Hold on for boot
         i2c.write(I2C_SLAVE_ADDR, 0x00);
         i2c.read(I2C_SLAVE_ADDR, &id);
 
@@ -60,7 +60,6 @@ bool IMU::BNO055::setup() {
 
     // We need to wait another 50ms for the devie to figure itself out.
     time::wait(50);
-
 
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Setting power mode...\r\n");
     // Set the power mode for the device, by writing to the Power mode address, followed by the normal power mode value.
@@ -111,7 +110,7 @@ IO::I2C::I2CStatus IMU::BNO055::getAccelerometer(int16_t& xBuffer, int16_t& yBuf
 
 IO::I2C::I2CStatus IMU::BNO055::fetchData(uint8_t lowestAddress, int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer) {
     // Create a buffer to read the 6 bytes of data into that we are about to read.
-    uint8_t buffer[6] = { 0, 0, 0, 0, 0, 0};
+    uint8_t buffer[6] = {0, 0, 0, 0, 0, 0};
 
     // Write the byte for the address we want to read, this is going to be the lowest bit address of the data.
     IO::I2C::I2CStatus writeStatus = i2c.write(0x28, lowestAddress);

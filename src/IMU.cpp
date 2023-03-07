@@ -53,7 +53,6 @@ void IMU::process() {
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw x: %d", (int16_t) accelerometerX / 100);
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw y: %d", (int16_t) accelerometerY / 100);
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw z: %d", (int16_t) accelerometerZ / 100);
-
 }
 
 }// namespace IMU
