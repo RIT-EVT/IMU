@@ -56,7 +56,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_X - vectorXValues[2]
     * 3. VECTOR_ACCELEROMETER_X - vectorXValues[3]
      */
-    uint16_t vectorXValues[4] = {1, 2, 3, 4};
+    int16_t vectorXValues[4] = {0, 0, 0, 0};
 
     /**
     * 0. VECTOR_EULER_Y - vectorYValues[0]
@@ -64,7 +64,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_Y - vectorYValues[2]
     * 3. VECTOR_ACCELEROMETER_Y - vectorYValues[3]
      */
-    uint16_t vectorYValues[4] = {1, 2, 3, 4};
+    int16_t vectorYValues[4] = {0, 0, 0, 0};
 
     /**
     * 0. VECTOR_EULER_Z - vectorZValues[0]
@@ -72,7 +72,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_Z - vectorZValues[2]
     * 3. VECTOR_ACCELEROMETER_Z - vectorZValues[3]
      */
-    uint16_t vectorZValues[4] = {1, 2, 3, 4};
+    int16_t vectorZValues[4] = {0, 0, 0, 0};
 
     /**
      * Object Dictionary Size
@@ -347,62 +347,62 @@ private:
          * Data Links
          */
         {
-            .Key = CO_KEY(0x2100, 0, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2100, 0, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorXValues[0],
         },
         {
-            .Key = CO_KEY(0x2100, 1, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2100, 1, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorXValues[1],
         },
         {
-            .Key = CO_KEY(0x2100, 2, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2100, 2, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorXValues[2],
         },
         {
-            .Key = CO_KEY(0x2100, 3, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2100, 3, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorXValues[3],
         },
         {
-            .Key = CO_KEY(0x2101, 0, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2101, 0, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorYValues[0],
         },
         {
-            .Key = CO_KEY(0x2101, 1, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2101, 1, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorYValues[1],
         },
         {
-            .Key = CO_KEY(0x2101, 2, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2101, 2, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorYValues[2],
         },
         {
-            .Key = CO_KEY(0x2101, 3, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2101, 3, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorYValues[3],
         },
         {
-            .Key = CO_KEY(0x2102, 0, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2102, 0, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorZValues[0],
         },
         {
-            .Key = CO_KEY(0x2102, 1, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2102, 1, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorZValues[1],
         },
         {
-            .Key = CO_KEY(0x2102, 2, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2102, 2, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorZValues[2],
         },
         {
-            .Key = CO_KEY(0x2102, 3, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2102, 3, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorZValues[3],
         },

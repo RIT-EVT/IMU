@@ -176,6 +176,6 @@ int main() {
         // Handle executing timer events that have elapsed
         COTmrProcess(&canNode.Tmr);
         // Wait for new data to come in
-        time::wait(1000);
+        time::wait(100);
     }
 }
