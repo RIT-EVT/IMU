@@ -79,50 +79,46 @@ public:
     bool setup();
 
     /**
-     * Fetch the euler angle data from the BNO055.
+     * Fetch the euler angle data.
      *
      * @param xBuffer a buffer to store the x data in.
      * @param yBuffer a buffer to store the y data in.
      * @param zBuffer a buffer to store the z data in.
-     * @return an i2c status reporting if the fetch worked or not.
      *
-     * @return
+     * @return an i2c status reporting if the fetch worked or not.
      */
     IO::I2C::I2CStatus getEuler(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
 
     /**
-     * Fetch the gyroscope data from the BNO055.
+     * Fetch the gyroscope data.
      *
      * @param xBuffer a buffer to store the x data in.
      * @param yBuffer a buffer to store the y data in.
      * @param zBuffer a buffer to store the z data in.
-     * @return an i2c status reporting if the fetch worked or not.
      *
-     * @return
+     * @return an i2c status reporting if the fetch worked or not.
      */
     IO::I2C::I2CStatus getGyroscope(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
 
     /**
-     * Fetch the linear accelerometer data from the BNO055.
+     * Fetch the linear acceleration data.
      *
      * @param xBuffer a buffer to store the x data in.
      * @param yBuffer a buffer to store the y data in.
      * @param zBuffer a buffer to store the z data in.
-     * @return an i2c status reporting if the fetch worked or not.
      *
-     * @return
+     * @return an i2c status reporting if the fetch worked or not.
      */
     IO::I2C::I2CStatus getLinearAccel(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
 
     /**
-     * Fetch the accelerometer data from the BNO055.
+     * Fetch the accelerometer data.
      *
      * @param xBuffer a buffer to store the x data in.
      * @param yBuffer a buffer to store the y data in.
      * @param zBuffer a buffer to store the z data in.
+     * 
      * @return an i2c status reporting if the fetch worked or not.
-     *
-     * @return
      */
     IO::I2C::I2CStatus getAccelerometer(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
 

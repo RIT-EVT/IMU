@@ -12,7 +12,7 @@ namespace IO = EVT::core::IO;
 namespace IMU {
 
 /**
- * The IMU main class that manages a BNO055 for measuring inertial units.
+ * The IMU main class that manages a BNO055 for measuring inertia.
  */
 class IMU {
 public:
