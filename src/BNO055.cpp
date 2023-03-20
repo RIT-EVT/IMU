@@ -1,6 +1,8 @@
 #include <BNO055.hpp>
 
-IMU::BNO055::BNO055(IO::I2C& i2C) : i2c(i2C) {}
+IMU::BNO055::BNO055(IO::I2C& i2C, uint8_t i2cSlaveAddress) : i2c(i2C) {
+    I2C_SLAVE_ADDR = i2cSlaveAddress;
+}
 
 /**
  * This function is a doozie, most of the issues with it come from the fact that the BNO055 does not use standard i2c.
@@ -116,13 +118,13 @@ IO::I2C::I2CStatus IMU::BNO055::fetchData(uint8_t lowestAddress, int16_t& xBuffe
     uint8_t buffer[6] = {0, 0, 0, 0, 0, 0};
 
     // Write the byte for the address we want to read, this is going to be the lowest bit address of the data.
-    IO::I2C::I2CStatus writeStatus = i2c.write(0x28, lowestAddress);
+    IO::I2C::I2CStatus writeStatus = i2c.write(I2C_SLAVE_ADDR, lowestAddress);
     if (writeStatus != IO::I2C::I2CStatus::OK) {
         return writeStatus;
     }
 
     // Read the next 6 bytes from the lowest address we just wrote into the buffer.
-    IO::I2C::I2CStatus readStatus = i2c.read(0x28, buffer, 6);
+    IO::I2C::I2CStatus readStatus = i2c.read(I2C_SLAVE_ADDR, buffer, 6);
     if (readStatus != IO::I2C::I2CStatus::OK) {
         return readStatus;
     }

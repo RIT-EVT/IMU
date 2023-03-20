@@ -68,8 +68,9 @@ public:
      * Takes in i2c to setup a connection with the board
      *
      * @param i2C an initialized i2c session.
+     * @param i2cSlaveAddress the slave address that the BNO055 should use to communicate.
      */
-    BNO055(IO::I2C& i2C);
+    BNO055(IO::I2C& i2C, uint8_t i2cSlaveAddress);
 
     /**
      * Sends all of the required i2c commands to initialize the chip
@@ -126,7 +127,7 @@ private:
     /**
      * The i2c address for the BNO055.
      */
-    static constexpr uint8_t I2C_SLAVE_ADDR = 0x28;
+    uint8_t I2C_SLAVE_ADDR;
 
     /**
      * The i2c object used for communication.

@@ -56,7 +56,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_X - vectorXValues[2]
     * 3. VECTOR_ACCELEROMETER_X - vectorXValues[3]
      */
-    int16_t vectorXValues[4] = {0, 0, 0, 0};
+    int16_t vectorXValues[4] = {};
 
     /**
     * 0. VECTOR_EULER_Y - vectorYValues[0]
@@ -64,7 +64,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_Y - vectorYValues[2]
     * 3. VECTOR_ACCELEROMETER_Y - vectorYValues[3]
      */
-    int16_t vectorYValues[4] = {0, 0, 0, 0};
+    int16_t vectorYValues[4] = {};
 
     /**
     * 0. VECTOR_EULER_Z - vectorZValues[0]
@@ -72,7 +72,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_Z - vectorZValues[2]
     * 3. VECTOR_ACCELEROMETER_Z - vectorZValues[3]
      */
-    int16_t vectorZValues[4] = {0, 0, 0, 0};
+    int16_t vectorZValues[4] = {};
 
     /**
      * Object Dictionary Size
