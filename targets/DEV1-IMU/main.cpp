@@ -20,11 +20,6 @@ namespace log = EVT::core::log;
 namespace time = EVT::core::time;
 namespace DEV = EVT::core::DEV;
 
-namespace IO = EVT::core::IO;
-namespace log = EVT::core::log;
-namespace time = EVT::core::time;
-namespace DEV = EVT::core::DEV;
-
 ///////////////////////////////////////////////////////////////////////////////
 // EVT-core CAN callback and CAN setup. This will include logic to set
 // aside CANopen messages into a specific queue
@@ -97,8 +92,15 @@ int main() {
     log::LOGGER.setUART(&uart);
 
     // Initialize the timer
-    DEV::Timer& timer = DEV::getTimer<DEV::MCUTimer::Timer2>(100);
-    IMU::IMU imu;
+    DEV::Timer& timer = DEV::getTimer<DEV::MCUTimer::Timer1>(100);
+    timer.startTimer();
+
+    // Setup i2c
+    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
+
+    // We do not need to call bno055.setup() because it is called in the IMU class initializer.
+    IMU::BNO055 bno055(i2c, 0x28);
+    IMU::IMU imu(bno055);
 
     /**
     * Initialize CAN
@@ -166,6 +168,8 @@ int main() {
     CONmtSetMode(&canNode.Nmt, CO_OPERATIONAL);
 
     while (1) {
+        imu.process();
+
         CONodeProcess(&canNode);
         // Update the state of timer based events
         COTmrService(&canNode.Tmr);

@@ -1,16 +1,29 @@
 #pragma once
 
+#include <BNO055.hpp>
 #include <Canopen/co_core.h>
 #include <EVT/io/CANopen.hpp>
+#include <EVT/io/I2C.hpp>
+#include <EVT/io/UART.hpp>
+#include <EVT/utils/time.hpp>
+
+namespace IO = EVT::core::IO;
 
 namespace IMU {
 
 /**
- * This is an example of a class for a board
+ * The IMU main class that manages a BNO055 for measuring inertia.
  */
 class IMU {
 public:
     static constexpr uint8_t NODE_ID = 0x17;
+
+    /**
+     * The initializer for the IMU class.
+     *
+     * @param bno055 the bno055 device that the IMU pulls data from.
+     */
+    IMU(BNO055& bno055);
 
     /**
      * Gets the object dictionary
@@ -26,14 +39,24 @@ public:
      */
     uint16_t getObjectDictionarySize() const;
 
+    /**
+     * Process all off the data from the BNO055.
+     */
+    void process();
+
 private:
+    /**
+     * The BNO055 device that data is pulled from.
+     */
+    BNO055 bno055;
+
     /**
     * 0. VECTOR_EULER_X - vectorXValues[0]
     * 1. VECTOR_GYROSCOPE_X - vectorXValues[1]
     * 2. VECTOR_LINEAR_ACCEL_X - vectorXValues[2]
     * 3. VECTOR_ACCELEROMETER_X - vectorXValues[3]
      */
-    uint16_t vectorXValues[4] = {1, 2, 3, 4};
+    int16_t vectorXValues[4] = {};
 
     /**
     * 0. VECTOR_EULER_Y - vectorYValues[0]
@@ -41,7 +64,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_Y - vectorYValues[2]
     * 3. VECTOR_ACCELEROMETER_Y - vectorYValues[3]
      */
-    uint16_t vectorYValues[4] = {1, 2, 3, 4};
+    int16_t vectorYValues[4] = {};
 
     /**
     * 0. VECTOR_EULER_Z - vectorZValues[0]
@@ -49,7 +72,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_Z - vectorZValues[2]
     * 3. VECTOR_ACCELEROMETER_Z - vectorZValues[3]
      */
-    uint16_t vectorZValues[4] = {1, 2, 3, 4};
+    int16_t vectorZValues[4] = {};
 
     /**
      * Object Dictionary Size
@@ -324,62 +347,62 @@ private:
          * Data Links
          */
         {
-            .Key = CO_KEY(0x2100, 0, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2100, 0, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorXValues[0],
         },
         {
-            .Key = CO_KEY(0x2100, 1, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2100, 1, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorXValues[1],
         },
         {
-            .Key = CO_KEY(0x2100, 2, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2100, 2, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorXValues[2],
         },
         {
-            .Key = CO_KEY(0x2100, 3, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2100, 3, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorXValues[3],
         },
         {
-            .Key = CO_KEY(0x2101, 0, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2101, 0, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorYValues[0],
         },
         {
-            .Key = CO_KEY(0x2101, 1, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2101, 1, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorYValues[1],
         },
         {
-            .Key = CO_KEY(0x2101, 2, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2101, 2, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorYValues[2],
         },
         {
-            .Key = CO_KEY(0x2101, 3, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2101, 3, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorYValues[3],
         },
         {
-            .Key = CO_KEY(0x2102, 0, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2102, 0, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorZValues[0],
         },
         {
-            .Key = CO_KEY(0x2102, 1, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2102, 1, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorZValues[1],
         },
         {
-            .Key = CO_KEY(0x2102, 2, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2102, 2, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorZValues[2],
         },
         {
-            .Key = CO_KEY(0x2102, 3, CO_UNSIGNED16 | CO_OBJ___PRW),
+            .Key = CO_KEY(0x2102, 3, CO_SIGNED16 | CO_OBJ___PRW),
             .Type = nullptr,
             .Data = (uintptr_t) &vectorZValues[3],
         },
