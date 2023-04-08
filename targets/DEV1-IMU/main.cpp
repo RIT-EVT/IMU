@@ -97,6 +97,9 @@ int main() {
     timer.startTimer();
 
     // Setup i2c
+    // i2c pins for the breakout board
+//    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
+    // i2c pins for the final board
     IO::I2C& i2c = IO::getI2C<IO::Pin::PB_6, IO::Pin::PB_7>();
 
     // We do not need to call bno055.setup() because it is called in the IMU class initializer.
@@ -168,7 +171,7 @@ int main() {
     CONodeStart(&canNode);
     CONmtSetMode(&canNode.Nmt, CO_OPERATIONAL);
 
-    uart.printf("Program Started");
+    uart.printf("Starting IMU Main...");
     while (1) {
         imu.process();
 

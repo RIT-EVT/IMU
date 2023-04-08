@@ -25,12 +25,16 @@ int main() {
     timer.startTimer();
 
     // Setup i2c
-    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
+    // i2c pins for the breakout board
+//    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
+    // i2c pins for the final board
+    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_6, IO::Pin::PB_7>();
 
     IMU::BNO055 bno055(i2c, 0x28);
     // The bno055 has a lengthy boot sequence, so it needs a setup function to be called.
     bno055.setup();
 
+    uart.printf("Starting BNO055 Testing...");
     while (1) {
         // Retrieve the Euler X, Y and Z values from the bno055
         int16_t eulerX;
@@ -70,21 +74,23 @@ int main() {
         int16_t accelerometerY;
         int16_t accelerometerZ;
 
-        bno055.getLinearAccel(accelerometerX, accelerometerY, accelerometerZ);
+        bno055.getAccelerometer(accelerometerX, accelerometerY, accelerometerZ);
 
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration x: %d.%d", accelerometerX / 100, (uint16_t) accelerometerX % 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration y: %d.%d", accelerometerY / 100, (uint16_t) accelerometerY % 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration z: %d.%d", accelerometerZ / 100, (uint16_t) accelerometerZ % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer x: %d.%d", accelerometerX / 100, (uint16_t) accelerometerX % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer y: %d.%d", accelerometerY / 100, (uint16_t) accelerometerY % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer z: %d.%d", accelerometerZ / 100, (uint16_t) accelerometerZ % 100);
 
         // Retrieve the Gravity X, Y, and Z values from the bno055
         int16_t gravityX;
         int16_t gravityY;
         int16_t gravityZ;
 
-        bno055.getLinearAccel(gravityX, gravityY, gravityZ);
+        bno055.getGravity(gravityX, gravityY, gravityZ);
 
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity x: %d.%d", accelerometerX / 100, (uint16_t) accelerometerX % 100);
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity y: %d.%d", accelerometerY / 100, (uint16_t) accelerometerY % 100);
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity z: %d.%d", accelerometerZ / 100, (uint16_t) accelerometerZ % 100);
+
+        EVT::core::time::wait(500);
     }
 }

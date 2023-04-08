@@ -44,14 +44,6 @@ void IMU::process() {
 
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer x: %d.%d", vectorXValues[3] / 100, (uint16_t) vectorXValues[3] % 100);
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer y: %d.%d", vectorYValues[3] / 100, (uint16_t) vectorYValues[3] % 100);
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer z: %d.%d", vectorZValues[3] / 100, (uint16_t) vectorZValues[3] % 100);
-
-    // Retrieve the gravity X, Y, and Z values from the bno055
-    bno055.getAccelerometer(vectorXValues[4], vectorYValues[4], vectorZValues[4]);
-
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity x: %d.%d", vectorXValues[4] / 100, (uint16_t) vectorXValues[4] % 100);
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity y: %d.%d", vectorYValues[4] / 100, (uint16_t) vectorYValues[4] % 100);
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity z: %d.%d", vectorZValues[4] / 100, (uint16_t) vectorZValues[4] % 100);
-}
+    log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer z: %d.%d", vectorZValues[3] / 100, (uint16_t) vectorZValues[3] % 100);}
 
 }// namespace IMU

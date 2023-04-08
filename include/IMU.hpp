@@ -55,27 +55,24 @@ private:
     * 1. VECTOR_GYROSCOPE_X - vectorXValues[1]
     * 2. VECTOR_LINEAR_ACCEL_X - vectorXValues[2]
     * 3. VECTOR_ACCELEROMETER_X - vectorXValues[3]
-    * 4. VECTOR_GRAVITY_X - vectorXValues[4]
      */
-    int16_t vectorXValues[5] = {};
+    int16_t vectorXValues[4] = {};
 
     /**
     * 0. VECTOR_EULER_Y - vectorYValues[0]
     * 1. VECTOR_GYROSCOPE_Y - vectorYValues[1]
     * 2. VECTOR_LINEAR_ACCEL_Y - vectorYValues[2]
     * 3. VECTOR_ACCELEROMETER_Y - vectorYValues[3]
-    * 4. VECTOR_GRAVITY_Y - vectorYValues[4]
      */
-    int16_t vectorYValues[5] = {};
+    int16_t vectorYValues[4] = {};
 
     /**
     * 0. VECTOR_EULER_Z - vectorZValues[0]
     * 1. VECTOR_GYROSCOPE_Z - vectorZValues[1]
     * 2. VECTOR_LINEAR_ACCEL_Z - vectorZValues[2]
     * 3. VECTOR_ACCELEROMETER_Z - vectorZValues[3]
-    * 4. VECTOR_GRAVITY_Z - vectorZValues[4]
      */
-    int16_t vectorZValues[5] = {};
+    int16_t vectorZValues[4] = {};
 
     /**
      * Object Dictionary Size
