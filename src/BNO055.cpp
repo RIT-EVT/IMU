@@ -36,7 +36,7 @@ bool IMU::BNO055::setup() {
 
     // This loop, will run until i2c returns a detected device and reports a successful connection.
     do {
-        log::LOGGER.log(log::Logger::LogLevel::ERROR, "Was not detected, try again...\r\n");
+        log::LOGGER.log(log::Logger::LogLevel::ERROR, "Was not detected at (0x%x), try again...\r\n", I2C_SLAVE_ADDR);
         time::wait(10);
     } while (i2c.write(I2C_SLAVE_ADDR, 0x00) != IO::I2C::I2CStatus::OK);
 
@@ -111,6 +111,10 @@ IO::I2C::I2CStatus IMU::BNO055::getLinearAccel(int16_t& xBuffer, int16_t& yBuffe
 
 IO::I2C::I2CStatus IMU::BNO055::getAccelerometer(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer) {
     return fetchData(BNO055_ACCEL_DATA_X_LSB_ADDR, xBuffer, yBuffer, zBuffer);
+}
+
+IO::I2C::I2CStatus IMU::BNO055::getGravity(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer) {
+    return fetchData(BNO055_GRAVITY_DATA_X_LSB_ADDR, xBuffer, yBuffer, zBuffer);
 }
 
 IO::I2C::I2CStatus IMU::BNO055::fetchData(uint8_t lowestAddress, int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer) {

@@ -39,9 +39,9 @@ int main() {
 
         bno055.getEuler(eulerX, eulerY, eulerZ);
 
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler Raw x: %d", (int16_t) eulerX / 16);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler Raw y: %d", (int16_t) eulerY / 16);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler Raw z: %d", (int16_t) eulerZ / 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler x: %d.%d", eulerX / 16, (uint16_t) eulerX % 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler y: %d.%d", eulerY / 16, (uint16_t) eulerY % 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler z: %d.%d", eulerZ / 16, (uint16_t) eulerZ % 16);
 
         // Retrieve the Gyroscope X, Y, and Z values from the bno055
         int16_t gyroX;
@@ -50,9 +50,9 @@ int main() {
 
         bno055.getGyroscope(gyroX, gyroY, gyroZ);
 
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw x: %d", (int16_t) gyroX / 16);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw y: %d", (int16_t) gyroY / 16);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope Raw z: %d", (int16_t) gyroZ / 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope x: %d.%d", gyroX / 16, (uint16_t) gyroX % 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope y: %d.%d", gyroY / 16, (uint16_t) gyroY % 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope z: %d.%d", gyroZ / 16, (uint16_t) gyroZ % 16);
 
         // Retrieve the Linear Acceleration X, Y, and Z values from the bno055
         int16_t linearAccelX;
@@ -61,19 +61,30 @@ int main() {
 
         bno055.getLinearAccel(linearAccelX, linearAccelY, linearAccelZ);
 
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration Raw x: %d", (int16_t) linearAccelX / 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration Raw y: %d", (int16_t) linearAccelY / 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration Raw z: %d", (int16_t) linearAccelZ / 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration x: %d.%d", linearAccelX / 100, (uint16_t) linearAccelX % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration y: %d.%d", linearAccelY / 100, (uint16_t) linearAccelY % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration z: %d.%d", linearAccelZ / 100, (uint16_t) linearAccelZ % 100);
 
         // Retrieve the Accelerometer X, Y, and Z values from the bno055
         int16_t accelerometerX;
         int16_t accelerometerY;
         int16_t accelerometerZ;
 
-        bno055.getLinearAccel(linearAccelX, linearAccelY, linearAccelZ);
+        bno055.getLinearAccel(accelerometerX, accelerometerY, accelerometerZ);
 
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw x: %d", (int16_t) accelerometerX / 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw y: %d", (int16_t) accelerometerY / 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw z: %d", (int16_t) accelerometerZ / 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration x: %d.%d", accelerometerX / 100, (uint16_t) accelerometerX % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration y: %d.%d", accelerometerY / 100, (uint16_t) accelerometerY % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration z: %d.%d", accelerometerZ / 100, (uint16_t) accelerometerZ % 100);
+
+        // Retrieve the Gravity X, Y, and Z values from the bno055
+        int16_t gravityX;
+        int16_t gravityY;
+        int16_t gravityZ;
+
+        bno055.getLinearAccel(gravityX, gravityY, gravityZ);
+
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity x: %d.%d", accelerometerX / 100, (uint16_t) accelerometerX % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity y: %d.%d", accelerometerY / 100, (uint16_t) accelerometerY % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity z: %d.%d", accelerometerZ / 100, (uint16_t) accelerometerZ % 100);
     }
 }

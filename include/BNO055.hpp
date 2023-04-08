@@ -123,6 +123,17 @@ public:
      */
     IO::I2C::I2CStatus getAccelerometer(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
 
+    /**
+     * Fetch the gravity data.
+     *
+     * @param xBuffer a buffer to store the x data in.
+     * @param yBuffer a buffer to store the y data in.
+     * @param zBuffer a buffer to store the z data in.
+     *
+     * @return an i2c status reporting if the fetch worked or not.
+     */
+    IO::I2C::I2CStatus getGravity(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+
 private:
     /**
      * The i2c address for the BNO055.
