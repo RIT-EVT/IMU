@@ -26,7 +26,7 @@ int main() {
 
     // Setup i2c
     // i2c pins for the breakout board
-//    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
+    //    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
     // i2c pins for the final board
     IO::I2C& i2c = IO::getI2C<IO::Pin::PB_6, IO::Pin::PB_7>();
 
