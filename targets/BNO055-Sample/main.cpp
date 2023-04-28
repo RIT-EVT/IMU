@@ -37,59 +37,59 @@ int main() {
     uart.printf("Starting BNO055 Testing...");
     while (1) {
         // Retrieve the Euler X, Y and Z values from the bno055
-        int16_t eulerX;
-        int16_t eulerY;
-        int16_t eulerZ;
+        uint16_t eulerX;
+        uint16_t eulerY;
+        uint16_t eulerZ;
 
         bno055.getEuler(eulerX, eulerY, eulerZ);
 
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler x: %d.%d", eulerX / 16, (uint16_t) eulerX % 16);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler y: %d.%d", eulerY / 16, (uint16_t) eulerY % 16);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler z: %d.%d", eulerZ / 16, (uint16_t) eulerZ % 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler x: %d.%d", eulerX / 16, eulerX % 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler y: %d.%d", eulerY / 16, eulerY % 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Euler z: %d.%d", eulerZ / 16, eulerZ % 16);
 
         // Retrieve the Gyroscope X, Y, and Z values from the bno055
-        int16_t gyroX;
-        int16_t gyroY;
-        int16_t gyroZ;
+        uint16_t gyroX;
+        uint16_t gyroY;
+        uint16_t gyroZ;
 
         bno055.getGyroscope(gyroX, gyroY, gyroZ);
 
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope x: %d.%d", gyroX / 16, (uint16_t) gyroX % 16);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope y: %d.%d", gyroY / 16, (uint16_t) gyroY % 16);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope z: %d.%d", gyroZ / 16, (uint16_t) gyroZ % 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope x: %d.%d", gyroX / 16, gyroX % 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope y: %d.%d", gyroY / 16, gyroY % 16);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gyroscope z: %d.%d", gyroZ / 16, gyroZ % 16);
 
         // Retrieve the Linear Acceleration X, Y, and Z values from the bno055
-        int16_t linearAccelX;
-        int16_t linearAccelY;
-        int16_t linearAccelZ;
+        uint16_t linearAccelX;
+        uint16_t linearAccelY;
+        uint16_t linearAccelZ;
 
         bno055.getLinearAccel(linearAccelX, linearAccelY, linearAccelZ);
 
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration x: %d.%d", linearAccelX / 100, (uint16_t) linearAccelX % 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration y: %d.%d", linearAccelY / 100, (uint16_t) linearAccelY % 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration z: %d.%d", linearAccelZ / 100, (uint16_t) linearAccelZ % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration x: %d.%d", linearAccelX / 100, linearAccelX % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration y: %d.%d", linearAccelY / 100, linearAccelY % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration z: %d.%d", linearAccelZ / 100, linearAccelZ % 100);
 
         // Retrieve the Accelerometer X, Y, and Z values from the bno055
-        int16_t accelerometerX;
-        int16_t accelerometerY;
-        int16_t accelerometerZ;
+        uint16_t accelerometerX;
+        uint16_t accelerometerY;
+        uint16_t accelerometerZ;
 
         bno055.getAccelerometer(accelerometerX, accelerometerY, accelerometerZ);
 
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer x: %d.%d", accelerometerX / 100, (uint16_t) accelerometerX % 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer y: %d.%d", accelerometerY / 100, (uint16_t) accelerometerY % 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer z: %d.%d", accelerometerZ / 100, (uint16_t) accelerometerZ % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer x: %d.%d", accelerometerX / 100, accelerometerX % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer y: %d.%d", accelerometerY / 100, accelerometerY % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer z: %d.%d", accelerometerZ / 100, accelerometerZ % 100);
 
         // Retrieve the Gravity X, Y, and Z values from the bno055
-        int16_t gravityX;
-        int16_t gravityY;
-        int16_t gravityZ;
+        uint16_t gravityX;
+        uint16_t gravityY;
+        uint16_t gravityZ;
 
         bno055.getGravity(gravityX, gravityY, gravityZ);
 
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity x: %d.%d", accelerometerX / 100, (uint16_t) accelerometerX % 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity y: %d.%d", accelerometerY / 100, (uint16_t) accelerometerY % 100);
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity z: %d.%d", accelerometerZ / 100, (uint16_t) accelerometerZ % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity x: %d.%d", gravityX / 100, gravityX % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity y: %d.%d", gravityY / 100, gravityY % 100);
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Gravity z: %d.%d", gravityZ / 100, gravityZ % 100);
 
         EVT::core::time::wait(500);
     }

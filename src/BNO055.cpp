@@ -97,27 +97,27 @@ bool IMU::BNO055::setup() {
     return true;
 }
 
-IO::I2C::I2CStatus IMU::BNO055::getEuler(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer) {
+IO::I2C::I2CStatus IMU::BNO055::getEuler(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer) {
     return fetchData(BNO055_EULER_H_LSB_ADDR, xBuffer, yBuffer, zBuffer);
 }
 
-IO::I2C::I2CStatus IMU::BNO055::getGyroscope(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer) {
+IO::I2C::I2CStatus IMU::BNO055::getGyroscope(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer) {
     return fetchData(BNO055_GYRO_DATA_X_LSB_ADDR, xBuffer, yBuffer, zBuffer);
 }
 
-IO::I2C::I2CStatus IMU::BNO055::getLinearAccel(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer) {
+IO::I2C::I2CStatus IMU::BNO055::getLinearAccel(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer) {
     return fetchData(BNO055_LINEAR_ACCEL_DATA_X_LSB_ADDR, xBuffer, yBuffer, zBuffer);
 }
 
-IO::I2C::I2CStatus IMU::BNO055::getAccelerometer(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer) {
+IO::I2C::I2CStatus IMU::BNO055::getAccelerometer(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer) {
     return fetchData(BNO055_ACCEL_DATA_X_LSB_ADDR, xBuffer, yBuffer, zBuffer);
 }
 
-IO::I2C::I2CStatus IMU::BNO055::getGravity(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer) {
+IO::I2C::I2CStatus IMU::BNO055::getGravity(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer) {
     return fetchData(BNO055_GRAVITY_DATA_X_LSB_ADDR, xBuffer, yBuffer, zBuffer);
 }
 
-IO::I2C::I2CStatus IMU::BNO055::fetchData(uint8_t lowestAddress, int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer) {
+IO::I2C::I2CStatus IMU::BNO055::fetchData(uint8_t lowestAddress, uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer) {
     // Create a buffer to read the 6 bytes of data into that we are about to read.
     uint8_t buffer[6] = {0, 0, 0, 0, 0, 0};
 

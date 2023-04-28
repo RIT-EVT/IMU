@@ -88,7 +88,7 @@ int main() {
     EVT::core::platform::init();
 
     // Setup UART
-    IO::UART& uart = IO::getUART<IO::Pin::UART_TX, IO::Pin::UART_RX>(9600);
+    IO::UART& uart = IO::getUART<IO::Pin::UART_TX, IO::Pin::UART_RX>(9600, true);
     log::LOGGER.setUART(&uart);
     uart.printf("Program Started");
 
@@ -180,7 +180,5 @@ int main() {
         COTmrService(&canNode.Tmr);
         // Handle executing timer events that have elapsed
         COTmrProcess(&canNode.Tmr);
-        // Wait for new data to come in
-        time::wait(100);
     }
 }
