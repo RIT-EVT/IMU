@@ -88,15 +88,19 @@ int main() {
     EVT::core::platform::init();
 
     // Setup UART
-    IO::UART& uart = IO::getUART<IO::Pin::UART_TX, IO::Pin::UART_RX>(9600);
+    IO::UART& uart = IO::getUART<IO::Pin::UART_TX, IO::Pin::UART_RX>(9600, true);
     log::LOGGER.setUART(&uart);
+    uart.printf("Program Started");
 
     // Initialize the timer
     DEV::Timer& timer = DEV::getTimer<DEV::MCUTimer::Timer1>(100);
     timer.startTimer();
 
     // Setup i2c
-    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
+    // i2c pins for the breakout board
+    //    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_8, IO::Pin::PB_9>();
+    // i2c pins for the final board
+    IO::I2C& i2c = IO::getI2C<IO::Pin::PB_6, IO::Pin::PB_7>();
 
     // We do not need to call bno055.setup() because it is called in the IMU class initializer.
     IMU::BNO055 bno055(i2c, 0x28);
@@ -117,10 +121,10 @@ int main() {
 
     // Check to see if the device is connected to the CAN network
     if (result != IO::CAN::CANStatus::OK) {
-        log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed to connect to CAN network\r\n");
+        log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed to connect to CAN network %x\r\n", result);
         return 1;
     } else {
-        log::LOGGER.log(log::Logger::LogLevel::INFO, "Connected to CAN network\r\n");
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Connected to CAN network %x\r\n", result);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -167,6 +171,7 @@ int main() {
     CONodeStart(&canNode);
     CONmtSetMode(&canNode.Nmt, CO_OPERATIONAL);
 
+    uart.printf("Starting IMU Main...");
     while (1) {
         imu.process();
 
@@ -175,7 +180,5 @@ int main() {
         COTmrService(&canNode.Tmr);
         // Handle executing timer events that have elapsed
         COTmrProcess(&canNode.Tmr);
-        // Wait for new data to come in
-        time::wait(100);
     }
 }

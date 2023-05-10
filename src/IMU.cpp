@@ -4,8 +4,7 @@ namespace IO = EVT::core::IO;
 
 namespace IMU {
 
-IMU::IMU(BNO055& bno055) : bno055(bno055) {
-    // Set up the BNO055 device.
+IMU::IMU(BNO055 bno055) : bno055(bno055) {
     bno055.setup();
 }
 

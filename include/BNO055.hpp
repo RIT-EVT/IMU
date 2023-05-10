@@ -88,7 +88,7 @@ public:
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
-    IO::I2C::I2CStatus getEuler(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+    IO::I2C::I2CStatus getEuler(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
 
     /**
      * Fetch the gyroscope data.
@@ -99,7 +99,7 @@ public:
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
-    IO::I2C::I2CStatus getGyroscope(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+    IO::I2C::I2CStatus getGyroscope(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
 
     /**
      * Fetch the linear acceleration data.
@@ -110,7 +110,7 @@ public:
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
-    IO::I2C::I2CStatus getLinearAccel(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+    IO::I2C::I2CStatus getLinearAccel(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
 
     /**
      * Fetch the accelerometer data.
@@ -121,13 +121,24 @@ public:
      * 
      * @return an i2c status reporting if the fetch worked or not.
      */
-    IO::I2C::I2CStatus getAccelerometer(int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+    IO::I2C::I2CStatus getAccelerometer(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
+
+    /**
+     * Fetch the gravity data.
+     *
+     * @param xBuffer a buffer to store the x data in.
+     * @param yBuffer a buffer to store the y data in.
+     * @param zBuffer a buffer to store the z data in.
+     *
+     * @return an i2c status reporting if the fetch worked or not.
+     */
+    IO::I2C::I2CStatus getGravity(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
 
 private:
     /**
      * The i2c address for the BNO055.
      */
-    uint8_t I2C_SLAVE_ADDR;
+    uint8_t i2cAddress;
 
     /**
      * The i2c object used for communication.
@@ -144,7 +155,7 @@ private:
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
-    IO::I2C::I2CStatus fetchData(uint8_t lowestAddress, int16_t& xBuffer, int16_t& yBuffer, int16_t& zBuffer);
+    IO::I2C::I2CStatus fetchData(uint8_t lowestAddress, uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer);
 };
 
 }// namespace IMU
