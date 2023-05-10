@@ -3,6 +3,7 @@
 namespace IO = EVT::core::IO;
 
 namespace IMU {
+
 IMU::IMU(BNO055 bno055) : bno055(bno055) {
     bno055.setup();
 }
@@ -38,7 +39,7 @@ void IMU::process() {
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Linear Acceleration Raw z: %d", (int16_t) vectorZValues[2] / 100);
 
     // Retrieve the Accelerometer X, Y, and Z values from the bno055
-    bno055.getLinearAccel(vectorXValues[3], vectorYValues[3], vectorZValues[3]);
+    bno055.getAccelerometer(vectorXValues[3], vectorYValues[3], vectorZValues[3]);
 
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw x: %d", (int16_t) vectorXValues[3] / 100);
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw y: %d", (int16_t) vectorYValues[3] / 100);

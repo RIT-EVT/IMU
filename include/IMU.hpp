@@ -12,12 +12,17 @@ namespace IO = EVT::core::IO;
 namespace IMU {
 
 /**
- * This is an example of a class for a board
+ * The IMU main class that manages a BNO055 for measuring inertia
  */
 class IMU {
 public:
     static constexpr uint8_t NODE_ID = 9;
 
+    /**
+     * Basic constructor for an IMU instance
+     *
+     * @param[in] bno055 BNO instance to read data from
+     */
     explicit IMU(BNO055 bno055);
 
     /**
@@ -48,7 +53,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_X - vectorXValues[2]
     * 3. VECTOR_ACCELEROMETER_X - vectorXValues[3]
      */
-    uint16_t vectorXValues[4] = {1, 2, 3, 4};
+    uint16_t vectorXValues[4] = {};
 
     /**
     * 0. VECTOR_EULER_Y - vectorYValues[0]
@@ -56,7 +61,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_Y - vectorYValues[2]
     * 3. VECTOR_ACCELEROMETER_Y - vectorYValues[3]
      */
-    uint16_t vectorYValues[4] = {1, 2, 3, 4};
+    uint16_t vectorYValues[4] = {};
 
     /**
     * 0. VECTOR_EULER_Z - vectorZValues[0]
@@ -64,7 +69,7 @@ private:
     * 2. VECTOR_LINEAR_ACCEL_Z - vectorZValues[2]
     * 3. VECTOR_ACCELEROMETER_Z - vectorZValues[3]
      */
-    uint16_t vectorZValues[4] = {1, 2, 3, 4};
+    uint16_t vectorZValues[4] = {};
 
     /**
      * Object Dictionary Size
@@ -406,4 +411,5 @@ private:
         CO_OBJ_DIR_ENDMARK,
     };
 };
+
 }// namespace IMU

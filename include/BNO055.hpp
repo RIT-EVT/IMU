@@ -138,7 +138,7 @@ private:
     /**
      * The i2c address for the BNO055.
      */
-    uint8_t I2C_SLAVE_ADDR;
+    uint8_t i2cAddress;
 
     /**
      * The i2c object used for communication.
