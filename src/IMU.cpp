@@ -44,7 +44,6 @@ void IMU::process() {
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw x: %d", (int16_t) vectorXValues[3] / 100);
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw y: %d", (int16_t) vectorYValues[3] / 100);
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Accelerometer Raw z: %d", (int16_t) vectorZValues[3] / 100);
-
 }
 
 }// namespace IMU
