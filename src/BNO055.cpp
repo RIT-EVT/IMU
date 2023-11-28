@@ -1,5 +1,4 @@
 #include <BNO055.hpp>
-#include <time.h>
 
 IMU::BNO055::BNO055(IO::I2C& i2C, uint8_t i2cSlaveAddress) : i2c(i2C) {
     i2cAddress = i2cSlaveAddress;
@@ -24,6 +23,7 @@ bool IMU::BNO055::setup() {
         i2c.write(i2cAddress, BNO055_OPR_MODE_ADDR);
         i2c.read(i2cAddress, &currMode);
         if (currMode != OPERATION_MODE_CONFIG) {
+            log::LOGGER.log(log::Logger::LogLevel::INFO, "Device is not in configuration mode, resetting device.");
             // We trigger a POR system reset. This resets the device and brings it off the i2c network for period of time.
             // Resetting also restores optimum values for the device to enter sleep or wake up. (section 3.2.2).
             uint8_t resetBytes[2] = {BNO055_SYS_TRIGGER_ADDR, 0x20};// RST_SYS is bit 5 of the SYS_TRIGGER
@@ -66,9 +66,12 @@ bool IMU::BNO055::setup() {
     // We read the ST_RESULT register that the startup POST self-test where the result for each sensor is put.
     i2c.write(i2cAddress, BNO055_ST_RESULT);
     i2c.read(i2cAddress, &result);
-    // All bits of results should be 1 if sensors pass self-test.
-    if (result != 0x15){
+    // All four LSB bits of result should be 1 for successful test
+    if ((result & 0x15) == 0x15){
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Self-test failed. Quitting initialization.\r\n");
+        return false;
+    }else{
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Self-test passed, all sensors and microcontroller are functioning.\r\n");
     }
 
     // Set the config mode to an operation mode that will report data. All of the values for this can be found in the datasheet.
