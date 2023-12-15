@@ -16,7 +16,7 @@ bool IMU::BNO055::setup() {
 
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Starting Initialization...\r\n");
 
-    // We check that i2c is activated already. If it is, we check if it is in operational mode.
+    // We check that BNO055's i2c is activated already. If it is, we check if it is in operational mode.
     // If it is in operational mode, we will manually trigger the board reset.
     if (i2c.write(i2cAddress, 0x00) == IO::I2C::I2CStatus::OK){
         uint8_t currMode;
@@ -36,10 +36,11 @@ bool IMU::BNO055::setup() {
     time::wait(650);
 
     // Check if i2c returns a detected device and reports a successful connection. Read the ID from chip id register (0x00)
-    // this is to make sure we are connected to the correct device.
+    // this is to make sure we are connected to the device
     uint8_t id = 0;
     if (i2c.write(i2cAddress, 0x00) != IO::I2C::I2CStatus::OK){
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Failed to detect IMU device with i2c and will quit initialization\r\n");
+        return
     }
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Device should be booted now... Checking if we can read...\r\n");
     i2c.read(i2cAddress, &id);
@@ -63,11 +64,12 @@ bool IMU::BNO055::setup() {
     time::wait(50);
 
     uint8_t result;
-    // We read the ST_RESULT register that the startup POST self-test where the result for each sensor is put.
+    // We read the ST_RESULT register that the startup self-test updates once completed.
+    // The self-test checks that all sensors are functional.
     i2c.write(i2cAddress, BNO055_ST_RESULT);
     i2c.read(i2cAddress, &result);
     // All four LSB bits of result should be 1 for successful test
-    if ((result & 0x15) == 0x15){
+    if ((result & 0x0F) != 0x0F){
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Self-test failed. Quitting initialization.\r\n");
         return false;
     }else{
