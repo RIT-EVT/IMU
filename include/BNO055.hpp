@@ -65,6 +65,17 @@ namespace IMU {
 class BNO055 {
 public:
     /**
+     * Represents potential errors that may take place when using the I2C
+     * interface. Each method that interfaces over I2C could potentially
+     * return one of these errors, or OK if no error.
+     */
+    enum class BNO055Status {
+        FAIL_INIT = 0,
+        FAIL_SELF_TEST = 1,
+        SUCCESS = 2
+    };
+
+    /**
      * Initializer for a BNO055 sensor.
      * Takes in i2c to setup a connection with the board
      *
@@ -78,7 +89,7 @@ public:
      *
      * @return whether the setup succeeded.
      */
-    bool setup();
+    BNO055Status setup();
 
     /**
      * Fetch the euler angle data.

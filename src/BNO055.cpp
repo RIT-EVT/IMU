@@ -12,7 +12,7 @@ IMU::BNO055::BNO055(IO::I2C& i2C, uint8_t i2cSlaveAddress) : i2c(i2C) {
  *
  * @return a boolean indicating whether or not the device was successfully initialized
  */
-bool IMU::BNO055::setup() {
+IMU::BNO055::BNO055Status IMU::BNO055::setup() {
 
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Starting Initialization...\r\n");
 
@@ -40,7 +40,7 @@ bool IMU::BNO055::setup() {
     uint8_t id = 0;
     if (i2c.write(i2cAddress, 0x00) != IO::I2C::I2CStatus::OK) {
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Failed to detect IMU device with i2c and will quit initialization\r\n");
-        return
+        return BNO055::BNO055Status::FAIL_INIT;
     }
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Device should be booted now... Checking if we can read...\r\n");
     i2c.read(i2cAddress, &id);
@@ -54,7 +54,7 @@ bool IMU::BNO055::setup() {
 
         if (id != BNO055_ID) {
             log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed to initialize the IMU. Quitting initialization.\r\n");
-            return false;
+            return BNO055::BNO055Status::FAIL_INIT;
         }
     }
 
@@ -71,8 +71,8 @@ bool IMU::BNO055::setup() {
     // All four LSB bits of result should be 1 for successful test
     if ((result & 0x0F) != 0x0F){
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Self-test failed. Quitting initialization.\r\n");
-        return false;
-    } else {
+        return BNO055::BNO055Status::FAIL_SELF_TEST;
+    }else{
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Self-test passed, all sensors and microcontroller are functioning.\r\n");
     }
 
@@ -85,7 +85,7 @@ bool IMU::BNO055::setup() {
 
     // If everything above worked, the device has successfully booted.
     log::LOGGER.log(log::Logger::LogLevel::INFO, "System successfully booted!\r\n");
-    return true;
+    return BNO055::BNO055Status::SUCCESS;
 }
 
 IO::I2C::I2CStatus IMU::BNO055::getEuler(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer) {
