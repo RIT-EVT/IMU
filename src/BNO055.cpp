@@ -18,7 +18,7 @@ bool IMU::BNO055::setup() {
 
     // We check that BNO055's i2c is activated already. If it is, we check if it is in operational mode.
     // If it is in operational mode, we will manually trigger the board reset.
-    if (i2c.write(i2cAddress, 0x00) == IO::I2C::I2CStatus::OK){
+    if (i2c.write(i2cAddress, 0x00) == IO::I2C::I2CStatus::OK) {
         uint8_t currMode;
         i2c.write(i2cAddress, BNO055_OPR_MODE_ADDR);
         i2c.read(i2cAddress, &currMode);
@@ -38,7 +38,7 @@ bool IMU::BNO055::setup() {
     // Check if i2c returns a detected device and reports a successful connection. Read the ID from chip id register (0x00)
     // this is to make sure we are connected to the device
     uint8_t id = 0;
-    if (i2c.write(i2cAddress, 0x00) != IO::I2C::I2CStatus::OK){
+    if (i2c.write(i2cAddress, 0x00) != IO::I2C::I2CStatus::OK) {
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Failed to detect IMU device with i2c and will quit initialization\r\n");
         return
     }
@@ -48,8 +48,8 @@ bool IMU::BNO055::setup() {
     if (id != BNO055_ID) {
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed first initialization... Trying again.\r\n");
 
-        time::wait(1000);// Hold on for boot
-        i2c.write(i2cAddress, 0x00); // keep reading id;
+        time::wait(1000);           // Hold on for boot
+        i2c.write(i2cAddress, 0x00);// keep reading id;
         i2c.read(i2cAddress, &id);
 
         if (id != BNO055_ID) {
@@ -72,7 +72,7 @@ bool IMU::BNO055::setup() {
     if ((result & 0x0F) != 0x0F){
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Self-test failed. Quitting initialization.\r\n");
         return false;
-    }else{
+    } else {
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Self-test passed, all sensors and microcontroller are functioning.\r\n");
     }
 
