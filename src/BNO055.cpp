@@ -69,10 +69,10 @@ IMU::BNO055::BNO055Status IMU::BNO055::setup() {
     i2c.write(i2cAddress, BNO055_ST_RESULT);
     i2c.read(i2cAddress, &result);
     // All four LSB bits of result should be 1 for successful test
-    if ((result & 0x0F) != 0x0F){
+    if ((result & 0x0F) != 0x0F) {
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Self-test failed. Quitting initialization.\r\n");
         return BNO055::BNO055Status::FAIL_SELF_TEST;
-    }else{
+    } else {
         log::LOGGER.log(log::Logger::LogLevel::INFO, "Self-test passed, all sensors and microcontroller are functioning.\r\n");
     }
 
