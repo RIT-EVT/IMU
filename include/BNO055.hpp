@@ -70,9 +70,9 @@ public:
      * return one of these errors, or OK if no error.
      */
     enum class BNO055Status {
-        FAIL_INIT = 0,
-        FAIL_SELF_TEST = 1,
-        SUCCESS = 2
+        OK = 0,
+        FAIL_INIT = 1,
+        FAIL_SELF_TEST = 2
     };
 
     /**
