@@ -32,7 +32,7 @@ int main() {
 
     IMU::BNO055 bno055(i2c, 0x28);
     // The bno055 has a lengthy boot sequence, so it needs a setup function to be called.
-    if (bno055.setup() == IMU::BNO055::BNO055Status::SUCCESS) {
+    if (bno055.setup() == IMU::BNO055::BNO055Status::OK {
         uart.printf("Starting BNO055 Testing...");
         while (1) {
             // Retrieve the Euler X, Y and Z values from the bno055

@@ -85,7 +85,7 @@ IMU::BNO055::BNO055Status IMU::BNO055::setup() {
 
     // If everything above worked, the device has successfully booted.
     log::LOGGER.log(log::Logger::LogLevel::INFO, "System successfully booted!\r\n");
-    return BNO055::BNO055Status::SUCCESS;
+    return BNO055::BNO055Status::OK;
 }
 
 IO::I2C::I2CStatus IMU::BNO055::getEuler(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer) {
