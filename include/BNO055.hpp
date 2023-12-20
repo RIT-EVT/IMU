@@ -25,6 +25,7 @@
 #define BNO055_QUATERNION_DATA_W_LSB_ADDR (0X20)
 #define BNO055_LINEAR_ACCEL_DATA_X_LSB_ADDR (0X28)
 #define BNO055_GRAVITY_DATA_X_LSB_ADDR (0X2E)
+#define BNO055_ST_RESULT (0x36)
 
 /** Operation mode settings **/
 #define OPERATION_MODE_CONFIG (0x00)
@@ -64,6 +65,17 @@ namespace IMU {
 class BNO055 {
 public:
     /**
+     * Represents potential errors that may take place when using the I2C
+     * interface. Each method that interfaces over I2C could potentially
+     * return one of these errors, or OK if no error.
+     */
+    enum class BNO055Status {
+        OK = 0,
+        FAIL_INIT = 1,
+        FAIL_SELF_TEST = 2
+    };
+
+    /**
      * Initializer for a BNO055 sensor.
      * Takes in i2c to setup a connection with the board
      *
@@ -77,7 +89,7 @@ public:
      *
      * @return whether the setup succeeded.
      */
-    bool setup();
+    BNO055Status setup();
 
     /**
      * Fetch the euler angle data.

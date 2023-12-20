@@ -12,81 +12,72 @@ IMU::BNO055::BNO055(IO::I2C& i2C, uint8_t i2cSlaveAddress) : i2c(i2C) {
  *
  * @return a boolean indicating whether or not the device was successfully initialized
  */
-bool IMU::BNO055::setup() {
-    // TODO: Check at the function call to see if it actually succeeds at setup.
+IMU::BNO055::BNO055Status IMU::BNO055::setup() {
+
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Starting Initialization...\r\n");
 
-    // First write an empty i2c command to the device.
+    // We check that BNO055's i2c is activated already. If it is, we check if it is in operational mode.
+    // If it is in operational mode, we will manually trigger the board reset.
+    if (i2c.write(i2cAddress, 0x00) == IO::I2C::I2CStatus::OK) {
+        uint8_t currMode;
+        i2c.write(i2cAddress, BNO055_OPR_MODE_ADDR);
+        i2c.read(i2cAddress, &currMode);
+        if (currMode != OPERATION_MODE_CONFIG) {
+            log::LOGGER.log(log::Logger::LogLevel::INFO, "Device is not in configuration mode, resetting device.");
+            // We trigger a POR system reset. This resets the device and brings it off the i2c network for period of time.
+            // Resetting also restores optimum values for the device to enter sleep or wake up. (section 3.2.2).
+            uint8_t resetBytes[2] = {BNO055_SYS_TRIGGER_ADDR, 0x20};// RST_SYS is bit 5 of the SYS_TRIGGER
+            i2c.write(i2cAddress, resetBytes, 2);
+        }
+    }
+
+    // Now board should be in configuration mode, either from start up or reset.
+    // We have to wait 650 ms which is the standard time for i2c to start up
+    time::wait(650);
+
+    // Check if i2c returns a detected device and reports a successful connection. Read the ID from chip id register (0x00)
+    // this is to make sure we are connected to the device
     uint8_t id = 0;
-    i2c.write(i2cAddress, &id, 0);
-    // After writing the empty command, we write a 0 to get the ID of the device, we then read the ID and store it in the id variable.
-    i2c.write(i2cAddress, 0x00);
-    i2c.read(i2cAddress, &id);
-
-    // Next we are writing the configuration bytes for the device. This sets the device into config mode which makes most of the
-    // registers writeable allowing us to configure its settings.
-    uint8_t configBytes[2] = {BNO055_OPR_MODE_ADDR, OPERATION_MODE_CONFIG};
-    i2c.write(i2cAddress, configBytes, 2);
-    EVT::core::time::wait(30);
-
-    // We next send a system reset signal. This resets the device and brings it off the i2c network for period of time.
-    uint8_t resetBytes[2] = {BNO055_SYS_TRIGGER_ADDR, 0x20};
-    i2c.write(i2cAddress, resetBytes, 2);
-    time::wait(30);
-
-    // This loop, will run until i2c returns a detected device and reports a successful connection.
-    do {
-        log::LOGGER.log(log::Logger::LogLevel::ERROR, "Was not detected at (0x%x), try again...\r\n", i2cAddress);
-        time::wait(10);
-    } while (i2c.write(i2cAddress, 0x00) != IO::I2C::I2CStatus::OK);
-
+    if (i2c.write(i2cAddress, 0x00) != IO::I2C::I2CStatus::OK) {
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Failed to detect IMU device with i2c and will quit initialization\r\n");
+        return BNO055::BNO055Status::FAIL_INIT;
+    }
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Device should be booted now... Checking if we can read...\r\n");
-
-    // Read the ID again, this is to make sure we are still connected to the correct device.
-    id = 0;
-    i2c.write(i2cAddress, 0x00);
     i2c.read(i2cAddress, &id);
-
     log::LOGGER.log(log::Logger::LogLevel::INFO, "ID Read 0x%x\r\n", id);
     if (id != BNO055_ID) {
         log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed first initialization... Trying again.\r\n");
 
-        time::wait(1000);// Hold on for boot
-        i2c.write(i2cAddress, 0x00);
+        time::wait(1000);           // Hold on for boot
+        i2c.write(i2cAddress, 0x00);// keep reading id;
         i2c.read(i2cAddress, &id);
 
         if (id != BNO055_ID) {
-            log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed to initialize the IMU. Quitting initialization\r\n");
-            return false;
+            log::LOGGER.log(log::Logger::LogLevel::ERROR, "Failed to initialize the IMU. Quitting initialization.\r\n");
+            return BNO055::BNO055Status::FAIL_INIT;
         }
     }
 
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Connected to i2c!\r\n");
 
-    // We need to wait another 50ms for the devie to figure itself out.
+    // We need to wait another 50ms for the device to figure itself out.
     time::wait(50);
 
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Setting power mode...\r\n");
-    // Set the power mode for the device, by writing to the Power mode address, followed by the normal power mode value.
-    uint8_t powerModeBytes[2] = {BNO055_PWR_MODE_ADDR, POWER_MODE_NORMAL};
-    i2c.write(i2cAddress, powerModeBytes, 2);
-    time::wait(10);
-
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Power mode set.\r\n");
-
-    // Reset the device page to 0x00.
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Reset device page.\r\n");
-    uint8_t pageBytes[2] = {BNO055_PAGE_ID_ADDR, 0x00};
-    i2c.write(i2cAddress, pageBytes, 2);
-
-    // Reset the system reset bits to 0x00, they were 0x20 because that's what we set them too earlier in the function.
-    log::LOGGER.log(log::Logger::LogLevel::INFO, "Reset the system reset.\r\n");
-    uint8_t systemResetResetBytes[2] = {BNO055_SYS_TRIGGER_ADDR, 0x00};
-    i2c.write(i2cAddress, systemResetResetBytes, 2);
-
-    time::wait(10);
+    uint8_t result;
+    // We read the ST_RESULT register that the startup self-test updates once completed.
+    // The self-test checks that all sensors are functional.
+    i2c.write(i2cAddress, BNO055_ST_RESULT);
+    i2c.read(i2cAddress, &result);
+    // All four LSB bits of result should be 1 for successful test
+    if ((result & 0x0F) != 0x0F) {
+        log::LOGGER.log(log::Logger::LogLevel::ERROR, "Self-test failed. Quitting initialization.\r\n");
+        return BNO055::BNO055Status::FAIL_SELF_TEST;
+    } else {
+        log::LOGGER.log(log::Logger::LogLevel::INFO, "Self-test passed, all sensors and microcontroller are functioning.\r\n");
+    }
 
     // Set the config mode to an operation mode that will report data. All of the values for this can be found in the datasheet.
+    // NDOF turns on all sensors on absolute orientation.
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Set config mode to all data.\r\n");
     uint8_t config2Bytes[2] = {BNO055_OPR_MODE_ADDR, OPERATION_MODE_NDOF};
     i2c.write(i2cAddress, config2Bytes, 2);
@@ -94,7 +85,7 @@ bool IMU::BNO055::setup() {
 
     // If everything above worked, the device has successfully booted.
     log::LOGGER.log(log::Logger::LogLevel::INFO, "System successfully booted!\r\n");
-    return true;
+    return BNO055::BNO055Status::OK;
 }
 
 IO::I2C::I2CStatus IMU::BNO055::getEuler(uint16_t& xBuffer, uint16_t& yBuffer, uint16_t& zBuffer) {
