@@ -12,8 +12,12 @@ CO_OBJ_T* IMU::getObjectDictionary() {
     return objectDictionary;
 }
 
-uint16_t IMU::getObjectDictionarySize() const {
+uint8_t IMU::getNumElements() {
     return OBJECT_DICTIONARY_SIZE;
+}
+
+uint8_t IMU::getNodeID() {
+    return NODE_ID;
 }
 
 void IMU::process() {

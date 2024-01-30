@@ -1,12 +1,14 @@
 #pragma once
 
 #include <BNO055.hpp>
-#include <Canopen/co_core.h>
 #include <EVT/io/CANopen.hpp>
 #include <EVT/io/I2C.hpp>
 #include <EVT/io/UART.hpp>
 #include <EVT/utils/time.hpp>
 
+#include <EVT/io/CANDevice.hpp>
+#include <EVT/io/CANOpenMacros.hpp>
+#include <co_core.h>
 namespace IO = EVT::core::IO;
 
 namespace IMU {
@@ -14,7 +16,7 @@ namespace IMU {
 /**
  * The IMU main class that manages a BNO055 for measuring inertia
  */
-class IMU {
+class IMU : public CANDevice {
 public:
     static constexpr uint8_t NODE_ID = 9;
 
@@ -30,14 +32,21 @@ public:
      *
      * @return an object dictionary
      */
-    CO_OBJ_T* getObjectDictionary();
+    CO_OBJ_T* getObjectDictionary() override;
 
     /**
      * Gets the size of the Object Dictionary
      *
      * @return size of the Object Dictionary
      */
-    uint16_t getObjectDictionarySize() const;
+    uint8_t getNumElements() override;
+
+    /**
+    * Get the device's node ID
+    *
+    * @return The node ID of the can device.
+     */
+    uint8_t getNodeID() override;
 
     /**
      * Handle running the core logic of the IMU
@@ -74,341 +83,59 @@ private:
     /**
      * Object Dictionary Size
      */
-    static constexpr uint16_t OBJECT_DICTIONARY_SIZE = 49;
+    static constexpr uint16_t OBJECT_DICTIONARY_SIZE = 58;
 
     /**
      * CAN Open object dictionary
      */
     CO_OBJ_T objectDictionary[OBJECT_DICTIONARY_SIZE + 1] = {
-        // Sync ID, defaults to 0x80
-        {
-            CO_KEY(0x1005, 0, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            nullptr,
-            (uintptr_t) 0x80,
-        },
-        /**
-         * Information about the hardware , hard coded sample values for now
-         * 1: Vendor ID
-         * 2: Product Code
-         * 3: Revision Number
-         * 4: Serial Number
-         */
-        {
-            .Key = CO_KEY(0x1018, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0x10,
-        },
-        {
-            .Key = CO_KEY(0x1018, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0x11,
-        },
-        {
-            .Key = CO_KEY(0x1018, 3, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0x12,
-        },
-        {
-            .Key = CO_KEY(0x1018, 4, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0x13,
-        },
 
-        /**
-         * SDO CAN message IDS.
-         * 1: Client -> Server ID, default is 0x600 + NODE_ID
-         * 2: Server -> Client ID, default is 0x580 + NODE_ID
-         */
-        {
-            .Key = CO_KEY(0x1200, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0x600 + NODE_ID,
-        },
-        {
-            .Key = CO_KEY(0x1200, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0x580 + NODE_ID,
-        },
+        MANDATORY_IDENTIFICATION_ENTRIES_1000_1014,
+        HEARTBEAT_PRODUCER_1017(2000),
+        IDENTITY_OBJECT_1018,
+        SDO_CONFIGURATION_1200,
 
-        /**
-         * TPDO 0 Settings
-         * 0. The number of sub indxes.
-         * 1. The COBID for the transmitting node
-         * 2. The transmission trigger 0xFE is asynchronous
-         * 3. The inhibit time
-         * 4. The event timer
-         */
-        {
-            .Key = CO_KEY(0x1800, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 5,
-        },
-        {
-            //180h+Node-ID
-            .Key = CO_KEY(0x1800, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) CO_COBID_TPDO_DEFAULT(0) + NODE_ID,
-        },
-        {
-            //timer triggered
-            .Key = CO_KEY(0x1800, 2, CO_UNSIGNED8 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0xFE,
-        },
-        {
-            //no inhibit time
-            .Key = CO_KEY(0x1800, 3, CO_UNSIGNED16 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0,
-        },
-        {
-            //send every 50 milliseconds
-            .Key = CO_KEY(0x1800, 5, CO_UNSIGNED16 | CO_OBJ_D__R_),
-            .Type = CO_TEVENT,
-            .Data = (uintptr_t) 50,
-        },
+        TRANSMIT_PDO_SETTINGS_OBJECT_18XX(0x00, TRANSMIT_PDO_TRIGGER_TIMER, TRANSMIT_PDO_INHIBIT_TIME_DISABLE, 50),
+        TRANSMIT_PDO_SETTINGS_OBJECT_18XX(0x01, TRANSMIT_PDO_TRIGGER_TIMER, TRANSMIT_PDO_INHIBIT_TIME_DISABLE, 50),
+        TRANSMIT_PDO_SETTINGS_OBJECT_18XX(0x02, TRANSMIT_PDO_TRIGGER_TIMER, TRANSMIT_PDO_INHIBIT_TIME_DISABLE, 50),
 
-        /**
-         * TPDO 1 Settings
-         * 0. The number of sub indxes.
-         * 1. The COBID for the transmitting node
-         * 2. The transmission trigger 0xFE is asynchronous
-         * 3. The inhibit time
-         * 4. The event timer
-         */
-        {
-            .Key = CO_KEY(0x1801, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 5,
-        },
-        {
-            //180h+Node-ID
-            .Key = CO_KEY(0x1801, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) CO_COBID_TPDO_DEFAULT(1) + NODE_ID,
-        },
-        {
-            //timer triggered
-            .Key = CO_KEY(0x1801, 2, CO_UNSIGNED8 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0xFE,
-        },
-        {
-            //no inhibit time
-            .Key = CO_KEY(0x1801, 3, CO_UNSIGNED16 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0,
-        },
-        {
-            //send every 50 milliseconds
-            .Key = CO_KEY(0x1801, 5, CO_UNSIGNED16 | CO_OBJ_D__R_),
-            .Type = CO_TEVENT,
-            .Data = (uintptr_t) 50,
-        },
+        TRANSMIT_PDO_MAPPING_START_KEY_1AXX(0x00, 0x04),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x00, 1, PDO_MAPPING_UNSIGNED16),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x00, 2, PDO_MAPPING_UNSIGNED16),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x00, 3, PDO_MAPPING_UNSIGNED16),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x00, 4, PDO_MAPPING_UNSIGNED16),
 
-        /**
-         * TPDO 2 Settings
-         * 0. The number of sub indxes.
-         * 1. The COBID for the transmitting node
-         * 2. The transmission trigger 0xFE is asynchronous
-         * 3. The inhibit time
-         * 4. The event timer
-         */
-        {
-            .Key = CO_KEY(0x1802, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 5,
-        },
-        {
-            //180h+Node-ID
-            .Key = CO_KEY(0x1802, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) CO_COBID_TPDO_DEFAULT(2) + NODE_ID,
-        },
-        {
-            //timer triggered
-            .Key = CO_KEY(0x1802, 2, CO_UNSIGNED8 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0xFE,
-        },
-        {
-            //no inhibit time
-            .Key = CO_KEY(0x1802, 3, CO_UNSIGNED16 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 0,
-        },
-        {
-            //send every 50 milliseconds
-            .Key = CO_KEY(0x1802, 5, CO_UNSIGNED16 | CO_OBJ_D__R_),
-            .Type = CO_TEVENT,
-            .Data = (uintptr_t) 50,
-        },
+        TRANSMIT_PDO_MAPPING_START_KEY_1AXX(0x01, 0x04),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x01, 1, PDO_MAPPING_UNSIGNED16),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x01, 2, PDO_MAPPING_UNSIGNED16),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x01, 3, PDO_MAPPING_UNSIGNED16),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x01, 4, PDO_MAPPING_UNSIGNED16),
 
-        /**
-         * TPDO 0 Mapping
-         * 0. The number of mapping objects in the first TPDO
-         * 1. Link to VECTOR_EULER_X - vectorXValues[0]
-         * 2. Link to VECTOR_GYROSCOPE_X - vectorXValues[1]
-         * 3. Link to VECTOR_LINEAR_ACCEL_X - vectorXValues[2]
-         * 4. Link to VECTOR_ACCELEROMETER_X - vectorXValues[3]
-         */
-        {
-            .Key = CO_KEY(0x1A00, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 4},
-        {
-            .Key = CO_KEY(0x1A00, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2100, 0, 16),
-        },
-        {
-            .Key = CO_KEY(0x1A00, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2100, 1, 16),
-        },
-        {
-            .Key = CO_KEY(0x1A00, 3, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2100, 2, 16),
-        },
-        {
-            .Key = CO_KEY(0x1A00, 4, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2100, 3, 16),
-        },
+        TRANSMIT_PDO_MAPPING_START_KEY_1AXX(0x02, 0x04),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x02, 1, PDO_MAPPING_UNSIGNED16),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x02, 2, PDO_MAPPING_UNSIGNED16),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x02, 3, PDO_MAPPING_UNSIGNED16),
+        TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x02, 4, PDO_MAPPING_UNSIGNED16),
 
-        /**
-         * TPDO 1 Mapping
-         * 0. The number of mapping objects in the first TPDO
-        * 1. Link to VECTOR_EULER_X - vectorYValues[0]
-        * 2. Link to VECTOR_GYROSCOPE_X - vectorYValues[1]
-        * 3. Link to VECTOR_LINEAR_ACCEL_X - vectorYValues[2]
-        * 4. Link to VECTOR_ACCELEROMETER_X - vectorYValues[3]
-         */
-        {
-            .Key = CO_KEY(0x1A01, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 4,
-        },
-        {
-            .Key = CO_KEY(0x1A01, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2101, 0, 16),
-        },
-        {
-            .Key = CO_KEY(0x1A01, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2101, 1, 16),
-        },
-        {
-            .Key = CO_KEY(0x1A01, 3, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2101, 2, 16),
-        },
-        {
-            .Key = CO_KEY(0x1A01, 4, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2101, 3, 16),
-        },
+        DATA_LINK_START_KEY_21XX(0x00, 0x04),
+        DATA_LINK_21XX(0x00, 0x01, CO_TUNSIGNED16, &vectorXValues[0]),
+        DATA_LINK_21XX(0x00, 0x02, CO_TUNSIGNED16, &vectorXValues[1]),
+        DATA_LINK_21XX(0x00, 0x03, CO_TUNSIGNED16, &vectorXValues[2]),
+        DATA_LINK_21XX(0x00, 0x04, CO_TUNSIGNED16, &vectorXValues[3]),
 
-        /**
-         * TPDO 2 Mapping
-         * 0. The number of mapping objects in the first TPDO
-         * 1. Link to VECTOR_EULER_X - vectorZValues[0]
-         * 2. Link to VECTOR_GYROSCOPE_X - vectorZValues[1]
-         * 3. Link to VECTOR_LINEAR_ACCEL_X - vectorZValues[2]
-         * 4. Link to VECTOR_ACCELEROMETER_X - vectorZValues[3]
-         */
-        {
-            .Key = CO_KEY(0x1A02, 0, CO_UNSIGNED8 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = (uintptr_t) 4,
-        },
-        {
-            .Key = CO_KEY(0x1A02, 1, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2102, 0, 16),
-        },
-        {
-            .Key = CO_KEY(0x1A02, 2, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2102, 1, 16),
-        },
-        {
-            .Key = CO_KEY(0x1A02, 3, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2102, 2, 16),
-        },
-        {
-            .Key = CO_KEY(0x1A02, 4, CO_UNSIGNED32 | CO_OBJ_D__R_),
-            .Type = nullptr,
-            .Data = CO_LINK(0x2102, 3, 16),
-        },
+        DATA_LINK_START_KEY_21XX(0x01, 0x04),
+        DATA_LINK_21XX(0x01, 0x01, CO_TUNSIGNED16, &vectorYValues[0]),
+        DATA_LINK_21XX(0x01, 0x02, CO_TUNSIGNED16, &vectorYValues[1]),
+        DATA_LINK_21XX(0x01, 0x03, CO_TUNSIGNED16, &vectorYValues[2]),
+        DATA_LINK_21XX(0x01, 0x04, CO_TUNSIGNED16, &vectorYValues[3]),
 
-        /**
-         * Data Links
-         */
-        {
-            .Key = CO_KEY(0x2100, 0, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorXValues[0],
-        },
-        {
-            .Key = CO_KEY(0x2100, 1, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorXValues[1],
-        },
-        {
-            .Key = CO_KEY(0x2100, 2, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorXValues[2],
-        },
-        {
-            .Key = CO_KEY(0x2100, 3, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorXValues[3],
-        },
-        {
-            .Key = CO_KEY(0x2101, 0, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorYValues[0],
-        },
-        {
-            .Key = CO_KEY(0x2101, 1, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorYValues[1],
-        },
-        {
-            .Key = CO_KEY(0x2101, 2, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorYValues[2],
-        },
-        {
-            .Key = CO_KEY(0x2101, 3, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorYValues[3],
-        },
-        {
-            .Key = CO_KEY(0x2102, 0, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorZValues[0],
-        },
-        {
-            .Key = CO_KEY(0x2102, 1, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorZValues[1],
-        },
-        {
-            .Key = CO_KEY(0x2102, 2, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorZValues[2],
-        },
-        {
-            .Key = CO_KEY(0x2102, 3, CO_UNSIGNED16 | CO_OBJ___PRW),
-            .Type = nullptr,
-            .Data = (uintptr_t) &vectorZValues[3],
-        },
-        CO_OBJ_DIR_ENDMARK,
+        DATA_LINK_START_KEY_21XX(0x02, 0x04),
+        DATA_LINK_21XX(0x02, 0x01, CO_TUNSIGNED16, &vectorZValues[0]),
+        DATA_LINK_21XX(0x02, 0x02, CO_TUNSIGNED16, &vectorZValues[1]),
+        DATA_LINK_21XX(0x02, 0x03, CO_TUNSIGNED16, &vectorZValues[2]),
+        DATA_LINK_21XX(0x02, 0x04, CO_TUNSIGNED16, &vectorZValues[3]),
+
+        CO_OBJ_DICT_ENDMARK,
     };
 };
 
