@@ -13,7 +13,6 @@
 #include <EVT/dev/MCUTimer.hpp>
 #include <IMU.hpp>
 
-
 namespace IO = EVT::core::IO;
 namespace log = EVT::core::log;
 namespace time = EVT::core::time;
