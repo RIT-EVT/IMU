@@ -86,8 +86,11 @@ private:
     static constexpr uint16_t OBJECT_DICTIONARY_SIZE = 58;
 
     /**
-     * CAN Open object dictionary
-     */
+    * The object dictionary itself. Will be populated by this object during
+    * construction.
+    *
+    * The plus one is for the special "end of dictionary" marker.
+    */
     CO_OBJ_T objectDictionary[OBJECT_DICTIONARY_SIZE + 1] = {
 
         MANDATORY_IDENTIFICATION_ENTRIES_1000_1014,
@@ -117,6 +120,8 @@ private:
         TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x02, 3, PDO_MAPPING_UNSIGNED16),
         TRANSMIT_PDO_MAPPING_ENTRY_1AXX(0x02, 4, PDO_MAPPING_UNSIGNED16),
 
+        // User defined data, this will be where we put elements that can be
+        // accessed via SDO and depending on configuration PDO
         DATA_LINK_START_KEY_21XX(0x00, 0x04),
         DATA_LINK_21XX(0x00, 0x01, CO_TUNSIGNED16, &vectorXValues[0]),
         DATA_LINK_21XX(0x00, 0x02, CO_TUNSIGNED16, &vectorXValues[1]),
@@ -135,6 +140,7 @@ private:
         DATA_LINK_21XX(0x02, 0x03, CO_TUNSIGNED16, &vectorZValues[2]),
         DATA_LINK_21XX(0x02, 0x04, CO_TUNSIGNED16, &vectorZValues[3]),
 
+        // End of dictionary marker
         CO_OBJ_DICT_ENDMARK,
     };
 };
