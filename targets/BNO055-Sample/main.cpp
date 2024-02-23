@@ -1,3 +1,7 @@
+/**
+ * Basic example of how to use the BNO055. Data is logged with UART.
+ */
+
 #include <EVT/dev/Timer.hpp>
 #include <EVT/io/UART.hpp>
 #include <EVT/io/pin.hpp>
