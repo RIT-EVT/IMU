@@ -4,11 +4,11 @@
 
 ### DEV1 IMU
 
-The Inertial Measurement Unit measures linear and angular acceleration of the bike using the BNO055 chip. More metrics (gravity, linear and angular velocity, pitch/yaw/roll, and the surrounding magnetic field) can be calculated from the two. The IMU also reports any relevant data over CAN. Such data provides general information to the bike on its orientation and allows other boards to act accordingly for optimal performance. The system is based around the built-in BNO055 chip. The firmware is written for the STM32F334K8U6 microcontroller designed into the DEV1 IMU.
+The Inertial Measurement Unit measures acceleration and position data for the bike using the BNO055 chip. This chip provides a number of metrics, including gravity vector, linear acceleration, angular velocity, Euler angles, and the surrounding magnetic field. The IMU exposes this data over CAN, providing general information to the bike on its orientation and allows other boards to act accordingly for optimal performance. The system is based around the built-in BNO055 chip. The firmware is written for the STM32F334K8U6 microcontroller designed into the DEV1 IMU.
 
 The DEV1 IMU will have the following responsibilities:
-1. Measure linear and angular acceleration in 3D space (X,Y,Z) of bike
-2. Expose the system over the DEV1 CAN network
+1. Measure linear and angular acceleration of the bike in 3D space (X,Y,Z)
+2. Report measurements over the DEV1 CAN network
 
 For more information on the BNO055 chip and its features, refer to its [datasheet](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf).
 
@@ -22,4 +22,4 @@ To generate a PDF of the Software Requirements Specification, run the command ri
 
 ### Related Projects
 
-The DEV1 BMS is one component of the larger DEV1 project, you can find related projects in the [RIT-EVT](https://github.com/RIT-EVT) GitHub page. Additionally, the STM32f334 driver code is handled via the [EVT-core](https://github.com/RIT-EVT/EVT-core) project.
+The DEV1 IMU is one component of the larger DEV1 project, you can find related projects in the [RIT-EVT](https://github.com/RIT-EVT) GitHub page. Additionally, the STM32f334 driver code is handled via the [EVT-core](https://github.com/RIT-EVT/EVT-core) project.

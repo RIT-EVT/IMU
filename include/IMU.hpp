@@ -14,7 +14,7 @@ namespace IO = EVT::core::IO;
 namespace IMU {
 
 /**
- * Main class for the IMU that manages its built-in BNO055 and sets up device for CAN communication.
+ * Main class for the IMU that manages its built-in BNO055 and manages CAN communication.
  */
 class IMU : public CANDevice {
 public:

@@ -159,7 +159,7 @@ private:
      * Fetch data from the BNO055 using the custom i2c specification used by the device.
      *
      * @param[in] lowestAddress the lowest address to read the data from.
-     * @param xBuffer a buffer to store the x data in.
+     * @param[out] xBuffer a buffer to store the x data in.
      * @param yBuffer a buffer to store the y data in.
      * @param zBuffer a buffer to store the z data in.
      *
