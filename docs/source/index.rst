@@ -38,6 +38,7 @@ the `Read the Docs DEV1 IMU page <https://imu.readthedocs.io>`_.
 
    api/index.rst
    srs.rst
+   software_state.rst
 
 Docs
 ====
