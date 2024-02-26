@@ -57,8 +57,6 @@ namespace IMU {
  * Notice:
  * This class uses a non standard (possibly) version of i2c that does not work with the EVT-Core provided `readReg` and `writeReg`.
  * For this reason, all i2c calls in this driver use the raw `write` and `read` functions.
- *
- * Datasheet for BNO055 - https://cdn-shop.adafruit.com/datasheets/BST_BNO055_DS000_12.pdf
  */
 class BNO055 {
 public:
