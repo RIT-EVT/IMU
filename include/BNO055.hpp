@@ -92,9 +92,9 @@ public:
     /**
      * Fetch the euler angle data.
      *
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
@@ -103,9 +103,9 @@ public:
     /**
      * Fetch the gyroscope data.
      *
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
@@ -114,9 +114,9 @@ public:
     /**
      * Fetch the linear acceleration data.
      *
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
@@ -125,9 +125,9 @@ public:
     /**
      * Fetch the accelerometer data.
      *
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      * 
      * @return an i2c status reporting if the fetch worked or not.
      */
@@ -136,9 +136,9 @@ public:
     /**
      * Fetch the gravity data.
      *
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
@@ -160,8 +160,8 @@ private:
      *
      * @param[in] lowestAddress the lowest address to read the data from.
      * @param[out] xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
