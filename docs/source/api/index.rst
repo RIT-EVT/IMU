@@ -14,3 +14,6 @@ IMU
 
 .. doxygenclass:: IMU::IMU
    :members:
+
+.. doxygenclass:: IMU::BNO055
+    :members:
