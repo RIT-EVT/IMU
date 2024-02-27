@@ -14,14 +14,15 @@ namespace IO = EVT::core::IO;
 namespace IMU {
 
 /**
- * The IMU main class that manages a BNO055 for measuring inertia
+ * Main class for the IMU that manages its built-in BNO055 and manages CAN communication.
  */
 class IMU : public CANDevice {
 public:
+    /** The node ID is used to identify the device on the CAN network */
     static constexpr uint8_t NODE_ID = 9;
 
     /**
-     * Basic constructor for an IMU instance
+     * Basic constructor for an IMU instance. It calls the initialization routine of the BNO055.
      *
      * @param[in] bno055 BNO instance to read data from
      */
@@ -49,11 +50,12 @@ public:
     uint8_t getNodeID() override;
 
     /**
-     * Handle running the core logic of the IMU
+     * Handle running the core logic of the IMU. This involves calling upon BNO055 to retrieve and log data.
      */
     void process();
 
 private:
+    /** The BNO055 sensor of the IMU */
     BNO055 bno055;
 
     /**

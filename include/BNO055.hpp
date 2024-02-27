@@ -56,11 +56,9 @@ namespace IMU {
  * A driver class for the BNO055 orientation sensor used in the IMU.
  * Notice:
  * This class uses a non standard (possibly) version of i2c that does not work with the EVT-Core provided `readReg` and `writeReg`.
- * For this reason, all i2c calls in this driver use the raw `write` and `read` functions to directly emulate the code found in the
- * arduino source.
+ * For this reason, all i2c calls in this driver use the raw `write` and `read` functions.
  *
  * Datasheet for BNO055 - https://cdn-shop.adafruit.com/datasheets/BST_BNO055_DS000_12.pdf
- * Arduino Source - https://github.com/adafruit/Adafruit_BNO055
  */
 class BNO055 {
 public:
@@ -79,8 +77,8 @@ public:
      * Initializer for a BNO055 sensor.
      * Takes in i2c to setup a connection with the board
      *
-     * @param i2C an initialized i2c session.
-     * @param i2cSlaveAddress the slave address that the BNO055 should use to communicate.
+     * @param[in] i2C an initialized i2c session.
+     * @param[in] i2cSlaveAddress the slave address that the BNO055 should use to communicate.
      */
     BNO055(IO::I2C& i2C, uint8_t i2cSlaveAddress);
 
@@ -94,9 +92,9 @@ public:
     /**
      * Fetch the euler angle data.
      *
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
@@ -105,9 +103,9 @@ public:
     /**
      * Fetch the gyroscope data.
      *
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
@@ -116,9 +114,9 @@ public:
     /**
      * Fetch the linear acceleration data.
      *
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
@@ -127,9 +125,9 @@ public:
     /**
      * Fetch the accelerometer data.
      *
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      * 
      * @return an i2c status reporting if the fetch worked or not.
      */
@@ -138,9 +136,9 @@ public:
     /**
      * Fetch the gravity data.
      *
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      *
      * @return an i2c status reporting if the fetch worked or not.
      */
@@ -160,10 +158,10 @@ private:
     /**
      * Fetch data from the BNO055 using the custom i2c specification used by the device.
      *
-     * @param lowestAddress the lowest address to read the data from.
-     * @param xBuffer a buffer to store the x data in.
-     * @param yBuffer a buffer to store the y data in.
-     * @param zBuffer a buffer to store the z data in.
+     * @param[in] lowestAddress the lowest address to read the data from.
+     * @param[out] xBuffer a buffer to store the x data in.
+     * @param[out] yBuffer a buffer to store the y data in.
+     * @param[out] zBuffer a buffer to store the z data in.
      *
      * @return an i2c status reporting if the fetch worked or not.
      */

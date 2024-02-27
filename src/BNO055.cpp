@@ -4,14 +4,6 @@ IMU::BNO055::BNO055(IO::I2C& i2C, uint8_t i2cSlaveAddress) : i2c(i2C) {
     i2cAddress = i2cSlaveAddress;
 }
 
-/**
- * This function is a doozie, most of the issues with it come from the fact that the BNO055 does not use standard i2c.
- * Because of this, none of the standard EVT readReg or writeReg functions work. This function uses the write and read functions
- * from EVT-Core to write specific bytes over i2c to correctly interact with the standard the BNO055 uses. We are not sure
- * about what the board is using, all data was retrieved by using a Saleae device and inspecting the Arduino code.
- *
- * @return a boolean indicating whether or not the device was successfully initialized
- */
 IMU::BNO055::BNO055Status IMU::BNO055::setup() {
 
     log::LOGGER.log(log::Logger::LogLevel::INFO, "Starting Initialization...\r\n");
