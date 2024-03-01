@@ -198,7 +198,7 @@ Apportioning of Requirements
 
 Specific Requirements
 =====================
-all of the intialization for IMU
+all of the initialization for IMU
 what to report etc.
 
 External Interface Requirements
@@ -232,12 +232,10 @@ STM32F334K8   ST Microcontroller selected for this project
 
 References
 ----------
-* `BNO055 Intelligent 9-axis absolute orientation sensor <https://www
-.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf>`_
+* `BNO055 Intelligent 9-axis absolute orientation sensor <https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf>`_
 * `CANopen - The standardized embedded network <https://www.can-cia.org/canopen/>`_
 * `EVT-core <https://evt-core.readthedocs.io/en/latest/>`_
-* `STM32F334K8 Mainstream Mixed signals MCUs Arm Cortex-M4 core with DSP and
-FPU, 64 Kbytes of Flash memory, 72 MHz CPU, CCM, 12-bit ADC 5 MSPS, comparators, op-amp, hr timer <https://www.st.com/en/microcontrollers-microprocessors/stm32f334k8.html#documentation>`_
+* `STM32F334K8 Mainstream Mixed signals MCUs Arm Cortex-M4 core with DSP and FPU, 64 Kbytes of Flash memory, 72 MHz CPU, CCM, 12-bit ADC 5 MSPS, comparators, op-amp, hr timer <https://www.st.com/en/microcontrollers-microprocessors/stm32f334k8.html#documentation>`_
 
 Revision
 --------
