@@ -32,20 +32,18 @@ the document. This list is not exhaustive, but intended to guide common readers
 of this document.
 
 * Electrical Team Members: Members of the electrical team who are designing
-and building the DEV1 IMU. Members of this group may refer to this document to
-ensure requirements and constraints align with their expectations. Additionally,
-this document can be used as a point of reference during the hardware/firmware
-bring up and debugging.
-
+  and building the DEV1 IMU. Members of this group may refer to this document
+  to ensure requirements and constraints align with their expectations.
+  Additionally, this document can be used as a point of reference during
+  the hardware/firmware bring up and debugging.
 * Firmware Team Members: Developers on the firmware team who are designing,
-developing, and testing the DEV1 IMU firmware. Members of this team will need to
-refer to this document throughout the development process to ensure all target 
-needs are met within the agreed upon constraints.
-
+  developing, and testing the DEV1 IMU firmware. Members of this team will
+  need to refer to this document throughout the development process to ensure
+  all target needs are met within the agreed upon constraints.
 * Integration Team Members: RIT EVT team members who handle systems level
-integration on the team. These team members may use this document to gain and 
-understanding of how the DEV1 IMU will operate. Most critically, how the DEV1 
-IMU will operate within the structure of the DEV1 architecture.
+  integration on the team. These team members may use this document to gain
+  and understanding of how the DEV1 IMU will operate. Most critically, how the
+  DEV1 IMU will operate within the structure of the DEV1 architecture.
 
 The document is laid out where it is not strictly necessary to read all sections
 in their entirety. Instead each section should be self-contained and 
@@ -78,35 +76,53 @@ Overall Description
 Product Perspective
 -------------------
 
-Purpose of the IMU - optimize performance of the bike
-configurable components - microcontroller and BNO055
-list some boards that will use the data
+The DEV1 IMU plays a role in performance optimization for the DEV1 bike. It
+reports measurements such as linear/angular acceleration and Euler over the
+bike's CAN network, allowing other boards to adjust their configurations to
+maintain the best performance.
 
+The DEV1 IMU is made up of two components, the STM32F334K8 microcontroller
+and the BNO055 orientation sensor chip. The ST microcontroller handles
+processing of data and manages CAN network communication for the IMU. The
+BNO055 is used to obtain the orientation measurements.
 
+* list some boards that will use the data (PDO vs SDO read)?
+* difference between linear acceleration data and accelerometer data?
 
 User Interfaces
 ~~~~~~~~~~~~~~~
 
-Not that i'm aware of
-
+Users will rarely interact directly with the DEV1 IMU software. The DEV1 IMU 
+software will mainly be interfaced with via CANopen and thus will require 
+additional tools to interact with the DEV1 IMU. There is no current plan 
+for a team-developed tool to provide an interface for interaction with the 
+DEV1 IMU.
 
 Hardware Interfaces
 ~~~~~~~~~~~~~~~~~~~
 
-CANopen network
-
+The DEV1 IMU is connected to the bike's CANopen network which is made up of a
+two-wire differential pair. The on-board ST microcontroller is programmable
+through JTAG.
 
 Software Interfaces
 ~~~~~~~~~~~~~~~~~~~
 
-CANopen network
-
+The DEV1 IMU software interface is the report of measurements over the CAN
+network. Note that configurations and functionality of the IMU cannot be
+adjusted or controlled by other boards over CAN.
 
 Communication Interfaces
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-CANopen
+There is no communication between IMU and the other boards on the DEV1 bike, ...
 
+* using a strict definition of communication as in both parties are connected
+at the same time
+
+Communication between the STM32F334r8 microcontroller and the BNO055 are
+handled via I2C, however it does not adhere to EVT standard. For more about
+the non-standard I2C communication scheme, read  ...
 
 Memory Constraints
 ~~~~~~~~~~~~~~~~~~
@@ -114,24 +130,31 @@ Memory Constraints
 The produced software is limited to the 64KB of flash memory that is available
 on the STM32F334r8. Therefore the resulting binary must fit within this size.
 
+* should be put under constraints section?
 
 Operations
 ~~~~~~~~~~
 
-output measurements, any signals??
-
+The DEV1 IMU's main operation is to relay data measured by the BNO055
+sensor to the rest of the bike through the CANopen network. This includes
+initialization and configuration of the BNO055 chip, and managing the
+CANopen network communication.
 
 Site Adaptation
 ~~~~~~~~~~~~~~~
 
-Not that i'm aware of
-
+The DEV1 IMU is intended specifically for the DEV1 system. Therefore, the 
+software requirements and design will center around the specifics of the DEV1 
+system. No additional adaptations are currently being considered.
 
 Product Functions
 -----------------
 
-I2c communication with BNO055 (but not standard)
-Notification of measurements
+Initialization and Configuration of BNO055
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Notification of Sensor Data Over CANopen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 User Classes and Characteristics
@@ -140,7 +163,10 @@ don't know
 
 Operating Environments
 ----------------------
-ST microcontroller
+The software will operate on the ST microcontroller present on the DEV1 IMU.
+The software environment is embedded with no operating system present. All
+development will take place through the EVT-core library and will interact
+directly with the ST microcontroller.
 
 
 User Documentation
@@ -153,16 +179,18 @@ Constraints
 
 Below are some constraints worth considering. They are a fixed part of the
 system.
+
 * Development must be in C/C++
 * Communication will take place using CANopen
 * EVT-core will be used for low level microcontroller interfacing
 * Must be developed for the STM32F334r8
 * Resulting binary must fit within the ST microcontroller 64KB flash memory
 * Orientation measurements must be performed by the BNO055
-* non standard i2c
+* non standard I2C communication with the BNO055
 
 Assumptions and Dependencies
 ----------------------------
+
 
 Apportioning of Requirements
 ----------------------------
@@ -176,6 +204,8 @@ what to report etc.
 External Interface Requirements
 -------------------------------
 
+initialization
+i2c communication must be established
 
 Functions
 ---------
