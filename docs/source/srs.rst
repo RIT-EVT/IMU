@@ -115,7 +115,7 @@ adjusted or controlled by other boards over CAN.
 Communication Interfaces
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-There is no communication between IMU and the other boards on the DEV1 bike, ...
+There is no communication between IMU and the other boards on the DEV1 bike ...
 
 * using a strict definition of communication as in both parties are connected
 at the same time
@@ -129,8 +129,6 @@ Memory Constraints
 
 The produced software is limited to the 64KB of flash memory that is available
 on the STM32F334r8. Therefore the resulting binary must fit within this size.
-
-* should be put under constraints section?
 
 Operations
 ~~~~~~~~~~
@@ -153,13 +151,31 @@ Product Functions
 Initialization and Configuration of BNO055
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Notification of Sensor Data Over CANopen
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+One of the main component of the DEV1 IMU is the BNO055 chip, which requires
+proper initialization and configuration before it will collect data. The
+following procedure is informed by the BNO055's datasheet which details
+correct usage of the chip. After establishing I2C connection with the chip,
+the driver class will:
 
+* check that the BNO055's self-test initiated at startup was successful
+* switch the BNO055 from configuration mode to operation mode
+
+Notification of BNO055 Data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The BNO055 will collect the following data in 3D space (X,Y,Z):
+
+* Euler angles
+* gyroscope measurements
+* linear acceleration
+* accelerometer measurements
+
+The data is broadcast on the CANopen network for other boards to use.
 
 User Classes and Characteristics
 --------------------------------
-don't know
+
+* There will be no human interaction with the IMU chip after development?
 
 Operating Environments
 ----------------------
@@ -168,11 +184,13 @@ The software environment is embedded with no operating system present. All
 development will take place through the EVT-core library and will interact
 directly with the ST microcontroller.
 
-
 User Documentation
 ------------------
 
-
+Additional documentation will need to exist for boards that will react to
+the DEV1 IMU's reported data. Information for each board will need to include
+which data it will use and how it will adjust itself accordingly. This will
+provide users with a holistic view of how the DEV1 IMU is used in the bike.
 
 Constraints
 -----------
@@ -191,25 +209,36 @@ system.
 Assumptions and Dependencies
 ----------------------------
 
+It is assumed that the BNO055 chip will behave exactly as described by its
+datasheet, unless communication between the BNO055 chip and ST
+microcontroller fails.
 
 Apportioning of Requirements
 ----------------------------
 
+At this point in the life cycle of the DEV1 IMU project, deployment has begun.
+Due to the nature of student-run teams, it is unlikely that there will be
+further revision to this system, as new students will likely start new projects.
+As a result, there are no future requirements planned to be added to this
+system.
 
 Specific Requirements
 =====================
-all of the initialization for IMU
-what to report etc.
 
 External Interface Requirements
 -------------------------------
 
-initialization
-i2c communication must be established
+* no external interface?
 
 Functions
 ---------
 
+The DEV1 IMU follows a specific procedure for proper initialization and
+configuration of the BNO055 chip. A general outline of what the system shall
+do is described in the Product Functions section under :ref:`Initialization
+and Configuration of BNO055`.
+
+* should be more specific?
 
 Appendix
 ========
