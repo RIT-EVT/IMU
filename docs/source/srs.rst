@@ -86,7 +86,7 @@ and the BNO055 orientation sensor chip. The ST microcontroller handles
 processing of data and manages CAN network communication for the IMU. The
 BNO055 is used to obtain the orientation measurements.
 
-* list some boards that will use the data (PDO vs SDO read)?
+* list some boards that will use the data
 * difference between linear acceleration data and accelerometer data?
 
 User Interfaces
@@ -121,8 +121,10 @@ There is no communication between IMU and the other boards on the DEV1 bike ...
 at the same time
 
 Communication between the STM32F334r8 microcontroller and the BNO055 are
-handled via I2C, however it does not adhere to EVT standard. For more about
-the non-standard I2C communication scheme, read  ...
+handled via I2C, however it does not adhere to standard I2C. For more about
+the non-standard I2C communication scheme, read ...
+
+* should leave implementation of i2c in the state of software doc?
 
 Memory Constraints
 ~~~~~~~~~~~~~~~~~~
@@ -158,7 +160,11 @@ correct usage of the chip. After establishing I2C connection with the chip,
 the driver class will:
 
 * check that the BNO055's self-test initiated at startup was successful
-* switch the BNO055 from configuration mode to operation mode
+* switch the BNO055 from configuration mode to NDOF operation mode
+
+The NDOF operation mode calculates fused absolute orientation data from the
+accelerometer, gyroscope and magnetometer. More information can be found in
+the BNO055 datasheet.
 
 Notification of BNO055 Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -170,12 +176,13 @@ The BNO055 will collect the following data in 3D space (X,Y,Z):
 * linear acceleration
 * accelerometer measurements
 
-The data is broadcast on the CANopen network for other boards to use.
+The data is broadcast on the CANopen network for other boards to read.
 
 User Classes and Characteristics
 --------------------------------
 
-* There will be no human interaction with the IMU chip after development?
+The IMU chip is an auxiliary board that does not require any user interaction
+post-development?
 
 Operating Environments
 ----------------------
