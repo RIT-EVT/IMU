@@ -242,8 +242,8 @@ Functions
 
 The DEV1 IMU follows a specific procedure for proper initialization and
 configuration of the BNO055 chip. A general outline of what the system shall
-do is described in the Product Functions section under :ref:`Initialization
-and Configuration of BNO055`.
+do is described in the Product Functions section under `Initialization
+and Configuration of BNO055`_.
 
 * should be more specific?
 
