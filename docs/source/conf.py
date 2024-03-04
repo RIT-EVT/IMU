@@ -15,12 +15,12 @@ import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-BOARD_NAME = 'BOARD_NAME'
+BOARD_NAME = 'IMU'
 
 # -- Project information -----------------------------------------------------
 
 project = BOARD_NAME
-copyright = '2021, EVT'
+copyright = '2024, EVT'
 author = 'EVT'
 
 # The full version, including alpha/beta/rc tags
