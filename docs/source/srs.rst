@@ -35,12 +35,12 @@ of this document.
   and building the DEV1 IMU. Members of this group may refer to this document
   to ensure requirements and constraints align with their expectations.
   Additionally, this document can be used as a point of reference during
-  the hardware/firmware bring up and debugging.
+  the hardware/firmware bringup process.
 * Firmware Team Members: Developers on the firmware team who are designing,
   developing, and testing the DEV1 IMU firmware. Members of this team will
   need to refer to this document throughout the development process to ensure
   all target needs are met within the agreed upon constraints.
-* Integration Team Members: RIT EVT team members who handle systems level
+* Integration Team Members: RIT EVT team members who handle systems-level
   integration on the team. These team members may use this document to gain
   and understanding of how the DEV1 IMU will operate. Most critically, how the
   DEV1 IMU will operate within the structure of the DEV1 architecture.
@@ -55,10 +55,9 @@ ways within this document.
 Product Scope
 -------------
 
-The DEV1 IMU measures acceleration and position data for the DEV1 bike. The
-DEV IMU reports its measurements over the DEV1 CAN network to provide a
-general overview of the bike's orientation for other boards to act
-accordingly for optimal performance.
+The DEV1 IMU measures inertial data for the DEV1 bike. The DEV1 IMU
+reports its measurements over the DEV1 CAN network for other boards
+to act accordingly for optimal performance.
 
 Overview
 --------
@@ -77,11 +76,11 @@ Product Perspective
 -------------------
 
 The DEV1 IMU plays a role in performance optimization for the DEV1 bike. It
-reports measurements such as linear/angular acceleration and Euler over the
-bike's CAN network, allowing other boards to adjust their configurations to
+reports measurements such as linear/angular acceleration and Euler angle over the
+bike's CAN network, allowing other boards to adjust their behaviors to
 maintain the best performance.
 
-The DEV1 IMU is made up of two components, the STM32F334K8 microcontroller
+The DEV1 IMU is made up of two primary components, the STM32F334K8 microcontroller
 and the BNO055 orientation sensor chip. The ST microcontroller handles
 processing of data and manages CAN network communication for the IMU. The
 BNO055 is used to obtain the orientation measurements.
@@ -102,8 +101,9 @@ Hardware Interfaces
 ~~~~~~~~~~~~~~~~~~~
 
 The DEV1 IMU is connected to the bike's CANopen network which is made up of a
-two-wire differential pair. The on-board ST microcontroller is programmable
-through JTAG.
+two-wire differential pair. The board also features a JTAG connector that exposes
+an SWD interface for programming and a UART interface for communicating directly
+with the microcontroller.
 
 Software Interfaces
 ~~~~~~~~~~~~~~~~~~~
@@ -147,7 +147,7 @@ system. No additional adaptations are currently being considered.
 Initialization and Configuration of BNO055
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-One of the main component of the DEV1 IMU is the BNO055 chip, which requires
+One of the main components of the DEV1 IMU is the BNO055 chip, which requires
 proper initialization and configuration before it will collect data. The
 following procedure is informed by the BNO055's datasheet which details
 correct usage of the chip. After establishing I2C connection with the chip,
@@ -205,7 +205,7 @@ system.
 * Must be developed for the STM32F334r8
 * Resulting binary must fit within the ST microcontroller 64KB flash memory
 * Orientation measurements must be performed by the BNO055
-* non standard I2C communication with the BNO055
+* Non-standard I2C communication with the BNO055
 
 Assumptions and Dependencies
 ----------------------------
@@ -250,9 +250,9 @@ Term          Definition
 -----------   -------------------------------------------
 IMU           Inertial Measurement Unit
 CAN           Controller Area Network
-CANopen       Communication protocol built on CAN
-DEV1          Dirt Electric Vehicle Team
-EVT           Electrical Vehicle Team
+CANopen       Higher-level communication protocol using CAN
+DEV1          Dirt Electric Vehicle 1
+EVT           Electric Vehicle Team
 I2C           Inter-Integrated Circuit
 KB            Kilobyte
 STM32F334K8   ST Microcontroller selected for this project
