@@ -10,13 +10,12 @@ Welcome to IMU's documentation!
 Introduction
 ============
 
-The Inertial Measurement Unit measures acceleration and position data for the
-bike using the BNO055 chip. This chip uses its sensors (
-accelerometers, magnetometer, and gyroscope) to calculate a number of
-metrics, including gravity vector, linear acceleration, angular velocity,
-Euler angles, and the surrounding magnetic field. The IMU reports these
-measurements over CAN, providing general information to the bike on its
-orientation and allowing other boards to act accordingly for optimal
+The Inertial Measurement Unit measures inertial values for the bike using the
+BNO055 chip. This chip uses its sensors (accelerometers, magnetometers, and 
+gyroscopes) to calculate a number of metrics, including gravity vector, linear 
+acceleration, angular velocity, Euler angles, and the surrounding magnetic field. 
+The IMU reports these measurements over CAN, providing general information to
+the bike on its orientation and allowing other boards to act accordingly for optimal
 performance. The system is based around the built-in BNO055 chip. The firmware
 is written for the STM32F334K8U6 microcontroller designed into the DEV1 IMU.
 
