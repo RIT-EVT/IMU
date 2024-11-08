@@ -29,9 +29,6 @@ For more information on the BNO055 chip and its features, refer to
 its `datasheet <https://www.bosch-sensortec
 .com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf>`_.
 
-For more information on the IMU and software level API, refer to
-the `Read the Docs DEV1 IMU page <https://imu.readthedocs.io>`_.
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

@@ -86,8 +86,8 @@ and the BNO055 orientation sensor chip. The ST microcontroller handles
 processing of data and manages CAN network communication for the IMU. The
 BNO055 is used to obtain the orientation measurements.
 
-* list some boards that will use the data
-* difference between linear acceleration data and accelerometer data?
+Currently, the IMU data is not being used by other boards, but can be used for
+traction control in the future.
 
 User Interfaces
 ~~~~~~~~~~~~~~~
@@ -108,23 +108,20 @@ through JTAG.
 Software Interfaces
 ~~~~~~~~~~~~~~~~~~~
 
-The DEV1 IMU software interface is the report of measurements over the CAN
+The DEV1 IMU software reports of measurements over the CANopen
 network. Note that configurations and functionality of the IMU cannot be
-adjusted or controlled by other boards over CAN.
+adjusted or controlled by other boards over CANopen.
 
 Communication Interfaces
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-There is no communication between IMU and the other boards on the DEV1 bike ...
-
-* using a strict definition of communication as in both parties are connected
-at the same time
+The DEV1 IMU communicates over the CANopen network to broadcast its data
+to other boards.
 
 Communication between the STM32F334r8 microcontroller and the BNO055 are
 handled via I2C, however it does not adhere to standard I2C. For more about
-the non-standard I2C communication scheme, read ...
-
-* should leave implementation of i2c in the state of software doc?
+the non-standard I2C communication scheme, read **(WIP, will include I2C
+implementation detail in the State of the Software doc)**
 
 Memory Constraints
 ~~~~~~~~~~~~~~~~~~
@@ -146,9 +143,6 @@ Site Adaptation
 The DEV1 IMU is intended specifically for the DEV1 system. Therefore, the 
 software requirements and design will center around the specifics of the DEV1 
 system. No additional adaptations are currently being considered.
-
-Product Functions
------------------
 
 Initialization and Configuration of BNO055
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -182,7 +176,7 @@ User Classes and Characteristics
 --------------------------------
 
 The IMU chip is an auxiliary board that does not require any user interaction
-post-development?
+post-development.
 
 Operating Environments
 ----------------------
@@ -245,8 +239,6 @@ configuration of the BNO055 chip. A general outline of what the system shall
 do is described in the Product Functions section under `Initialization
 and Configuration of BNO055`_.
 
-* should be more specific?
-
 Appendix
 ========
 
@@ -279,5 +271,5 @@ Revision
 ========    ============================          ==========
 Revision    Description                           Date
 --------    ----------------------------          ----------
-1           Initial documentation.
+1           Initial documentation.                
 ========    ============================          ==========
