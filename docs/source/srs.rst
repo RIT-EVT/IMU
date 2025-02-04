@@ -108,9 +108,8 @@ with the microcontroller.
 Software Interfaces
 ~~~~~~~~~~~~~~~~~~~
 
-The DEV1 IMU software reports of measurements over the CANopen
-network. Note that configurations and functionality of the IMU cannot be
-adjusted or controlled by other boards over CANopen.
+The DEV1 IMU software reports of measurements over the CANopen network. 
+Note that the behavior of the IMU cannot be modified over CANopen.
 
 Communication Interfaces
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -229,7 +228,7 @@ Specific Requirements
 External Interface Requirements
 -------------------------------
 
-* no external interface?
+* no external interface
 
 Functions
 ---------
@@ -271,5 +270,5 @@ Revision
 ========    ============================          ==========
 Revision    Description                           Date
 --------    ----------------------------          ----------
-1           Initial documentation.                
+1           Initial documentation.                2/4/2025
 ========    ============================          ==========
